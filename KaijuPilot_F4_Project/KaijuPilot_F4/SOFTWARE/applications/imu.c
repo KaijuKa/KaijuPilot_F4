@@ -11,14 +11,14 @@
 //经过matlab椭球拟合出的acc x,y,z 
 static MPU_Data_structure mpu_data = {0,0,0,0,0,0,0,0,0,0,0,0,-34.8312f,89.6591f,42.8492f,0};
 static IMU_Data_structure imu_data = {1,0,0,0,
-						0,0,0,
-	                    0,0,0,
-	                    0,0,0,
-						{{0,0,0},
-						 {0,0,0},
-						 {0,0,0}},
-						0,0,0
-					};
+							0,0,0,
+							0,0,0,
+							0,0,0,
+							{{0,0,0},
+							{0,0,0},
+							{0,0,0}},
+							0,0,0
+						};
 
 QueueHandle_t imu_data_queue = NULL;
 
