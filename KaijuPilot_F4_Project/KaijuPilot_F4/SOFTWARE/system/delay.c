@@ -99,37 +99,3 @@ u32 getsystime_us(void)
 	while(ms != systime_ms);
 	return value;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -5,7 +5,7 @@
 #include "stm32f4xx.h"
 
 typedef struct{
-	float pit_offset; //imu pit rol水平校准偏置
+	float pit_offset; //imu pit rol水平校准偏置 单位度
 	float rol_offset;
 	
 	u8 ch1_direct;    //通道124 输出正反
@@ -31,6 +31,9 @@ typedef struct{
 					  //除手动模式下 最大旋转速度 单位度/s
 	u16 rol_angular_spd_max;
 	u16 pit_angular_spd_max;
+					  //自动巡航模式下 空速设定值 和 海拔高度设定值
+	u8 target_air_speed;      //单位 m/s
+	u8 target_autoft_altitude;//单位 m
 	
 	
 } ARG_structure;
