@@ -44,4 +44,7 @@ void pid_calcu(float dT_s,                 //周期
 			   PID_VAL_structure *pid_val, //pid数据结构体
 			   float err_i_lim,            //积分限幅
 				u8 inter_en);            //积分使能
+double mx_sin(double rad);
+double my_sin(double rad);
+float my_cos(double rad);
 #endif
