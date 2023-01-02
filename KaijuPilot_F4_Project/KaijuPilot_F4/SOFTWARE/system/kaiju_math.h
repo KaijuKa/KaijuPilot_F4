@@ -47,4 +47,5 @@ void pid_calcu(float dT_s,                 //ÖÜÆÚ
 double mx_sin(double rad);
 double my_sin(double rad);
 float my_cos(double rad);
+float my_deadzone(float x,float medi,float zoom);
 #endif

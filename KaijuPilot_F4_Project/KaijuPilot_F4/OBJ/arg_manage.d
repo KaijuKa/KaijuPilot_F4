@@ -35,3 +35,4 @@
 ..\obj\arg_manage.o: ..\FWLIB\inc\stm32f4xx_dac.h
 ..\obj\arg_manage.o: ..\FWLIB\inc\stm32f4xx_dcmi.h
 ..\obj\arg_manage.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
+..\obj\arg_manage.o: ..\SOFTWARE\driver\at24c02.h

@@ -8,6 +8,26 @@
 #include "queue.h"
 
 
+
+/* 
+	俯视图机头
+	pit
+	icm20602 y
+	|
+	|
+	|
+	|
+	|________ rol icm20602 x
+	
+	因此
+	姿态环pit对应gyro_x
+	姿态环rol对应gyro_y
+	
+	姿态解算中的机体坐标是icm20602的xyz坐标
+gyro遵守右手定则, 拇指指向坐标轴正方向 四指方向为角速度正方向
+*/
+
+
 //经过matlab椭球拟合出的acc x,y,z 
 static MPU_Data_structure mpu_data = {0,0,0,0,0,0,0,0,0,0,0,0,-34.8312f,89.6591f,42.8492f,0};
 static IMU_Data_structure imu_data = {1,0,0,0,
@@ -263,7 +283,7 @@ static float t_temp;
 void IMU_RPY_Calcu(void)
 {
 	t_temp = LIMIT(1 - my_pow(imu_data.att_matrix[2][0]),0,1);
-		
+	
 	
 	if(z_vec[2]>0.05f || z_vec[2]<-0.05f)
 	{

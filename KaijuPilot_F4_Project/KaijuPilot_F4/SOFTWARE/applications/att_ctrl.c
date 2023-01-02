@@ -6,6 +6,8 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 
+Rotation_structure rotation_data = {1, 0, 0, 0, 0, 0};
+
 PID_ARG_structure rol_arg_L1 = {
 	.kp = 0.8f,
 	.kd = 0.012f,
@@ -54,6 +56,10 @@ PID_VAL_structure pit_val_L2;
 *******************************************************************************/
 void ATT_VAL_Init(void)
 {
+	IMU_Data_structure imu_data;
+	//从消息队列中取出imu数据
+	xQueuePeek(imu_data_queue, (void *)&imu_data, 0);
+	
 	rol_val_L2.expect_old = 0;
 	rol_val_L2.err_old = 0;
 	rol_val_L2.out = 0;
@@ -77,6 +83,14 @@ void ATT_VAL_Init(void)
 	pit_val_L1.out = 0;
 	pit_val_L1.err_i = 0;
 	pit_val_L1.fb_old = 0;
+	
+	rotation_data.w = imu_data.w;
+	rotation_data.x = imu_data.x;
+	rotation_data.y = imu_data.y;
+	rotation_data.z = imu_data.z;
+	
+	rotation_data.expect_rol_spd_lpf = 0;
+	rotation_data.expect_pit_spd_lpf = 0;
 }
 
 /*******************************************************************************
@@ -142,22 +156,18 @@ void Rotation_Ctrl(float dT_s, float expect_rol_spd, float expect_pit_spd, u8 in
 }
 
 /*******************************************************************************
-* 函 数 名         : Rotation_ctrl2
+* 函 数 名         : Rotation_Ctrl2
 * 函数功能		     : 滚转控制
 * 输    入         : 周期 s 期望rol滚转速度 期望pit滚转速度 积分使能
 * 输    出         : 无
 *******************************************************************************/
-void Rotation_ctrl2(float dT_s, float expect_rol_spd, float expect_pit_spd, u8 inter_en)
+#define ONE_PI   (3.14159265f)
+void Rotation_Ctrl2(float dT_s, float expect_rol_spd, float expect_pit_spd, u8 inter_en)
 {	
-	static float expect_rol_spd_lpf = 0;
-	static float expect_pit_spd_lpf = 0;
-	static float w,x,y,z;            //总期望四元数
 	float w_tmp, x_tmp, y_tmp, z_tmp;//临时四元数
 	float pnqn[4][4] = {0};          //四元数计算中间结果
 	float expect_rol_err_set;        //期望角度误差设定值
 	float expect_pit_err_set;        
-	float expect_rol_err;            //期望角度误差经反馈处理后
-	float expect_pit_err;
 	float q0q1,q0q2,q1q1,q1q3,q2q2,q2q3;
 	float t_temp;
 	
@@ -166,15 +176,18 @@ void Rotation_ctrl2(float dT_s, float expect_rol_spd, float expect_pit_spd, u8 i
 	xQueuePeek(imu_data_queue, (void *)&imu_data, 0);	
 	
 	//速度增量限幅
-	expect_rol_spd_lpf += LIMIT((expect_rol_spd - expect_rol_spd_lpf), -30, 30);
-	expect_pit_spd_lpf += LIMIT((expect_pit_spd - expect_pit_spd_lpf), -30, 30);
+	rotation_data.expect_rol_spd_lpf += LIMIT((expect_rol_spd - rotation_data.expect_rol_spd_lpf), -30, 30);
+	rotation_data.expect_pit_spd_lpf += LIMIT((expect_pit_spd - rotation_data.expect_pit_spd_lpf), -30, 30);
 	
 	//计算此次期望角度误差
-	expect_rol_err_set = expect_rol_spd_lpf*dT_s;
-	expect_pit_err_set = expect_pit_spd_lpf*dT_s;
+	expect_rol_err_set = rotation_data.expect_rol_spd_lpf*dT_s;
+	expect_pit_err_set = rotation_data.expect_pit_spd_lpf*dT_s;
 	
 	expect_rol_err_set = expect_rol_err_set/2;
 	expect_pit_err_set = expect_pit_err_set/2;
+	
+	expect_rol_err_set = expect_rol_err_set*ONE_PI/180.0f;
+	expect_pit_err_set = expect_pit_err_set*ONE_PI/180.0f;
 	
 	//计算四元数, q(err_set) = q(rol)*q(pit)
 	//计算中间结果 跳过了两个四元数的构建
@@ -194,28 +207,28 @@ void Rotation_ctrl2(float dT_s, float expect_rol_spd, float expect_pit_spd, u8 i
 	
 	//计算四元数, q(new) = q(err_set)*q(old)
 	//计算中间结果
-	pnqn[0][0] = w_tmp*w;
-	pnqn[0][1] = w_tmp*x;
-	pnqn[0][2] = w_tmp*y;
-	pnqn[0][3] = w_tmp*z;
-	pnqn[1][0] = x_tmp*w;
-	pnqn[1][1] = x_tmp*x;
-	pnqn[1][2] = x_tmp*y;
-	pnqn[1][3] = x_tmp*z;
-	pnqn[2][0] = y_tmp*w;
-	pnqn[2][1] = y_tmp*x;
-	pnqn[2][2] = y_tmp*y;
-	pnqn[2][3] = y_tmp*z;
-	pnqn[3][0] = z_tmp*w;
-	pnqn[3][1] = z_tmp*x;
-	pnqn[3][2] = z_tmp*y;
-	pnqn[3][3] = z_tmp*z;
+	pnqn[0][0] = w_tmp*rotation_data.w;
+	pnqn[0][1] = w_tmp*rotation_data.x;
+	pnqn[0][2] = w_tmp*rotation_data.y;
+	pnqn[0][3] = w_tmp*rotation_data.z;
+	pnqn[1][0] = x_tmp*rotation_data.w;
+	pnqn[1][1] = x_tmp*rotation_data.x;
+	pnqn[1][2] = x_tmp*rotation_data.y;
+	pnqn[1][3] = x_tmp*rotation_data.z;
+	pnqn[2][0] = y_tmp*rotation_data.w;
+	pnqn[2][1] = y_tmp*rotation_data.x;
+	pnqn[2][2] = y_tmp*rotation_data.y;
+	pnqn[2][3] = y_tmp*rotation_data.z;
+	pnqn[3][0] = z_tmp*rotation_data.w;
+	pnqn[3][1] = z_tmp*rotation_data.x;
+	pnqn[3][2] = z_tmp*rotation_data.y;
+	pnqn[3][3] = z_tmp*rotation_data.z;
 	
 	//q(new)
-	w = pnqn[0][0] - pnqn[1][1] - pnqn[2][2] - pnqn[3][3];
-	x = pnqn[1][0] + pnqn[0][1] + pnqn[2][3] - pnqn[3][2];
-	y = pnqn[2][0] + pnqn[0][2] + pnqn[3][1] - pnqn[1][3];
-	z = pnqn[3][0] + pnqn[0][3] + pnqn[1][2] - pnqn[2][1];
+	rotation_data.w = pnqn[0][0] - pnqn[1][1] - pnqn[2][2] - pnqn[3][3];
+	rotation_data.x = pnqn[1][0] + pnqn[0][1] + pnqn[2][3] - pnqn[3][2];
+	rotation_data.y = pnqn[2][0] + pnqn[0][2] + pnqn[3][1] - pnqn[1][3];
+	rotation_data.z = pnqn[3][0] + pnqn[0][3] + pnqn[1][2] - pnqn[2][1];
 	
 	//取当前姿态的共轭
 	imu_data.x = -imu_data.x;
@@ -224,44 +237,45 @@ void Rotation_ctrl2(float dT_s, float expect_rol_spd, float expect_pit_spd, u8 i
 	
 	//计算四元数, q(err) = q(new)*(q(fb)-1)
 	//计算中间结果
-	pnqn[0][0] = w*imu_data.w;
-	pnqn[0][1] = w*imu_data.x;
-	pnqn[0][2] = w*imu_data.y;
-	pnqn[0][3] = w*imu_data.z;
-	pnqn[1][0] = x*imu_data.w;
-	pnqn[1][1] = x*imu_data.x;
-	pnqn[1][2] = x*imu_data.y;
-	pnqn[1][3] = x*imu_data.z;
-	pnqn[2][0] = y*imu_data.w;
-	pnqn[2][1] = y*imu_data.x;
-	pnqn[2][2] = y*imu_data.y;
-	pnqn[2][3] = y*imu_data.z;
-	pnqn[3][0] = z*imu_data.w;
-	pnqn[3][1] = z*imu_data.x;
-	pnqn[3][2] = z*imu_data.y;
-	pnqn[3][3] = z*imu_data.z;
+	pnqn[0][0] = rotation_data.w*imu_data.w;
+	pnqn[0][1] = rotation_data.w*imu_data.x;
+	pnqn[0][2] = rotation_data.w*imu_data.y;
+	pnqn[0][3] = rotation_data.w*imu_data.z;
+	pnqn[1][0] = rotation_data.x*imu_data.w;
+	pnqn[1][1] = rotation_data.x*imu_data.x;
+	pnqn[1][2] = rotation_data.x*imu_data.y;
+	pnqn[1][3] = rotation_data.x*imu_data.z;
+	pnqn[2][0] = rotation_data.y*imu_data.w;
+	pnqn[2][1] = rotation_data.y*imu_data.x;
+	pnqn[2][2] = rotation_data.y*imu_data.y;
+	pnqn[2][3] = rotation_data.y*imu_data.z;
+	pnqn[3][0] = rotation_data.z*imu_data.w;
+	pnqn[3][1] = rotation_data.z*imu_data.x;
+	pnqn[3][2] = rotation_data.z*imu_data.y;
+	pnqn[3][3] = rotation_data.z*imu_data.z;
 	
 	//q(err)
-	w_tmp = pnqn[0][0] - pnqn[1][1] - pnqn[2][2] - pnqn[3][3];
-	x_tmp = pnqn[1][0] + pnqn[0][1] + pnqn[2][3] - pnqn[3][2];
-	y_tmp = pnqn[2][0] + pnqn[0][2] + pnqn[3][1] - pnqn[1][3];
-	z_tmp = pnqn[3][0] + pnqn[0][3] + pnqn[1][2] - pnqn[2][1];
+	rotation_data.w_err = pnqn[0][0] - pnqn[1][1] - pnqn[2][2] - pnqn[3][3];
+	rotation_data.x_err = pnqn[1][0] + pnqn[0][1] + pnqn[2][3] - pnqn[3][2];
+	rotation_data.y_err = pnqn[2][0] + pnqn[0][2] + pnqn[3][1] - pnqn[1][3];
+	rotation_data.z_err = pnqn[3][0] + pnqn[0][3] + pnqn[1][2] - pnqn[2][1];
 	
-	q0q1 = w_tmp * x_tmp;
-	q0q2 = w_tmp * y_tmp;
-	q1q1 = x_tmp * x_tmp;
-	q1q3 = x_tmp * z_tmp;
-	q2q2 = y_tmp * y_tmp;
-	q2q3 = y_tmp * z_tmp;
+	q0q1 = rotation_data.w_err * rotation_data.x_err;
+	q0q2 = rotation_data.w_err * rotation_data.y_err;
+	q1q1 = rotation_data.x_err * rotation_data.x_err;
+	q1q3 = rotation_data.x_err * rotation_data.z_err;
+	q2q2 = rotation_data.y_err * rotation_data.y_err;
+	q2q3 = rotation_data.y_err * rotation_data.z_err;
 	
+	//计算偏差角
 	t_temp = LIMIT(1 - my_pow(2*q1q3 - 2*q0q2),0,1);
 	
-	expect_pit_err = fast_atan2(2*q2q3 + 2*q0q1, 1- (2*q1q1 + 2*q2q2))*57.30f;
-	expect_rol_err = -fast_atan2(2*q1q3 - 2*q0q2, my_sqrt(t_temp))*57.30f;
+	rotation_data.expect_pit_err = fast_atan2(2*q2q3 + 2*q0q1, 1- (2*q1q1 + 2*q2q2))*57.30f;
+	rotation_data.expect_rol_err = -fast_atan2(2*q1q3 - 2*q0q2, my_sqrt(t_temp))*57.30f;
 	
-		//外环 level2
-	pid_calcu(dT_s, expect_rol_err, 0, &rol_arg_L2, &rol_val_L2, 200, inter_en);
-	pid_calcu(dT_s, expect_pit_err, 0, &pit_arg_L2, &pit_val_L2, 200, inter_en);
+	//外环 level2
+	pid_calcu(dT_s, rotation_data.expect_rol_err, 0, &rol_arg_L2, &rol_val_L2, 200, inter_en);
+	pid_calcu(dT_s, rotation_data.expect_pit_err, 0, &pit_arg_L2, &pit_val_L2, 200, inter_en);
 	
 	//限制大小
 	rol_val_L2.out = LIMIT(rol_val_L2.out, -500, 500);

@@ -7,7 +7,7 @@ ARG_structure flight_arg = {
 	.pit_offset = 0,
 	.rol_offset = 0,
 	
-	.ch1_direct = 1,
+	.ch1_direct = 0,
 	.ch2_direct = 1,
 	.ch4_direct = 0,
 	
@@ -27,8 +27,8 @@ ARG_structure flight_arg = {
 	.rol_angle_max = 65,
 	.pit_angle_max = 50,
 	
-	.rol_angular_spd_max = 200,
-	.pit_angular_spd_max = 150
+	.rol_angular_spd_max = 100,
+	.pit_angular_spd_max = 80
 };
 
 /*******************************************************************************

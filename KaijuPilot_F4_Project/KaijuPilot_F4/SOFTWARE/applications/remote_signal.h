@@ -3,7 +3,7 @@
 
 #include "stm32f4xx.h"
 
-#define OFFLINE_DEADLINE 500
+#define OFFLINE_DEADLINE 2000
 #define PULSE_MIN 800
 #define PULSE_MAX 2200
 

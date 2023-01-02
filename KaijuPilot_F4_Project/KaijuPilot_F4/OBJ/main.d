@@ -54,3 +54,6 @@
 ..\obj\main.o: ..\FreeRTOS\include\list.h
 ..\obj\main.o: ..\SOFTWARE\system\task_manage.h
 ..\obj\main.o: ..\SOFTWARE\applications\remote_signal.h
+..\obj\main.o: ..\SOFTWARE\driver\iic.h
+..\obj\main.o: ..\SOFTWARE\system\arg_manage.h
+..\obj\main.o: ..\SOFTWARE\driver\pwm.h

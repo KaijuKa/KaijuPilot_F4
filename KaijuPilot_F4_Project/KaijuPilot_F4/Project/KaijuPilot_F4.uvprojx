@@ -471,6 +471,26 @@
               <FileType>5</FileType>
               <FilePath>..\SOFTWARE\applications\msg_interchange.h</FilePath>
             </File>
+            <File>
+              <FileName>route_ctrl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\applications\route_ctrl.c</FilePath>
+            </File>
+            <File>
+              <FileName>route_ctrl.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SOFTWARE\applications\route_ctrl.h</FilePath>
+            </File>
+            <File>
+              <FileName>tecs.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\applications\tecs.c</FilePath>
+            </File>
+            <File>
+              <FileName>tecs.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SOFTWARE\applications\tecs.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -525,6 +545,26 @@
               <FileName>led.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\SOFTWARE\driver\led.h</FilePath>
+            </File>
+            <File>
+              <FileName>at24c02.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\driver\at24c02.c</FilePath>
+            </File>
+            <File>
+              <FileName>at24c02.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SOFTWARE\driver\at24c02.h</FilePath>
+            </File>
+            <File>
+              <FileName>iic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\driver\iic.c</FilePath>
+            </File>
+            <File>
+              <FileName>iic.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SOFTWARE\driver\iic.h</FilePath>
             </File>
           </Files>
         </Group>

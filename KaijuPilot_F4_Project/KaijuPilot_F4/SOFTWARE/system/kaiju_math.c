@@ -315,3 +315,31 @@ float my_cos(double rad)
 
 	return my_sin(rad)*_flag;
 }
+
+/*******************************************************************************
+* 函 数 名         : my_deadzone
+* 函数功能		     : 死区限制
+* 输    入         : 输入值x 中间值medi 死区值zoom
+* 输    出         : sin
+*******************************************************************************/
+float my_deadzone(float x,float medi,float zoom)
+{
+	float t;
+	if(x>medi)
+	{
+		t = x - zoom;
+		if(t<medi)
+		{
+			t = medi;
+		}
+	}
+	else
+	{
+		t = x + zoom;
+		if(t>medi)
+		{
+			t = medi;
+		}
+	}
+  return (t);
+}

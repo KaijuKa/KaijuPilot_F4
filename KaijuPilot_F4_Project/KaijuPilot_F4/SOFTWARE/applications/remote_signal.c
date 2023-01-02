@@ -131,13 +131,13 @@ void RC_SBUS_Analysis(void)
 	{
 		rc_data.ch_processed[i] = 0.644f * (rc_data.sbus_ch[i] - 1000);
 		
+		rc_data.ch_processed[i] = LIMIT(rc_data.ch_processed[i], -500, 500);
+		
 		//”Õ√≈Àı∑≈
 		if(i == 2)
 		{
 			rc_data.ch_processed[i] = (s16)((rc_data.ch_processed[i]+500)*0.6f)-500;
 		}
-		
-		rc_data.ch_processed[i] = LIMIT(rc_data.ch_processed[i], -500, 500);
 	}
 	rc_data.sbus_offline = 0;
 	RC_SBUS_Offline_Reset();

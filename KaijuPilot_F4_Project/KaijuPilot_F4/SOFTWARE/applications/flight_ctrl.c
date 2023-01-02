@@ -124,10 +124,11 @@ void Stabilize_Task(u8 dT_ms)
 *******************************************************************************/
 void Sport_Task(u8 dT_ms)
 {
-	float expect_rol_spd = (rc_data.ch_processed[CH_ROL]/500.0f)*flight_arg.rol_angular_spd_max;
-    float expect_pit_spd = (rc_data.ch_processed[CH_PIT]/500.0f)*flight_arg.pit_angular_spd_max;
+	//添加死区限制
+	float expect_rol_spd = (my_deadzone(rc_data.ch_processed[CH_ROL], 0, 20)/500.0f)*flight_arg.rol_angular_spd_max;
+    float expect_pit_spd = (my_deadzone(rc_data.ch_processed[CH_PIT], 0, 20)/500.0f)*flight_arg.pit_angular_spd_max;
 	
-	Rotation_Ctrl(0.02f, expect_rol_spd, expect_pit_spd, fl_data.flight_stat);
+	Rotation_Ctrl2(0.02f, expect_rol_spd, expect_pit_spd, fl_data.flight_stat);
 	
 	DRV_PWM_Output((s16)(rol_val_L1.out), (s16)(pit_val_L1.out),\
 	rc_data.ch_processed[CH_THR], rc_data.ch_processed[CH_YAW]);

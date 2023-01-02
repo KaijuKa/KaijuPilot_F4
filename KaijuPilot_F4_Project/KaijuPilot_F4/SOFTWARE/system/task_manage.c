@@ -73,7 +73,7 @@ void task_20ms(void *pvParameters)
 	{
 		RC_Offline_Check(20);
 		MSG_Send();
-//		Flight_Ctrl_Task(20);
+		Flight_Ctrl_Task(20);
 		vTaskDelayUntil( &xLastWakeTime, 20 );
 	}
 }

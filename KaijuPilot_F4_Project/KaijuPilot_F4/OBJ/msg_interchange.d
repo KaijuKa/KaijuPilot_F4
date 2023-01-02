@@ -50,3 +50,5 @@
 ..\obj\msg_interchange.o: ..\SOFTWARE\driver\uart.h
 ..\obj\msg_interchange.o: D:\keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\obj\msg_interchange.o: ..\SOFTWARE\applications\remote_signal.h
+..\obj\msg_interchange.o: ..\SOFTWARE\applications\att_ctrl.h
+..\obj\msg_interchange.o: ..\SOFTWARE\system\kaiju_math.h
