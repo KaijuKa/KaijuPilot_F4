@@ -3,6 +3,7 @@
 
 #include "stm32f4xx.h"
 
+//tecs控制结构体
 typedef struct{
 	float air_speed;          //当前空速 V
 	float altitude;           //当前海拔高度 H

@@ -1,6 +1,6 @@
 #include "tecs.h"
 #include "kaiju_math.h"
-#include "arg_manage.h"
+#include "par_manage.h"
 
 #define GRAV_GCC 9.8f //重力加速度
 
@@ -39,12 +39,12 @@ PID_VAL_structure pit_id_val;
 void TECS_Ctrl(u8 dT_s)
 {
 	//计算目标航迹角
-	pid_calcu(dT_s, flight_arg.target_autoft_altitude, tecs_data.altitude, 
+	pid_calcu(dT_s, fl_par.par.target_autoft_altitude, tecs_data.altitude, 
 	&alt_2_tt_angle_arg, &alt_2_tt_angle_val, 0, 0);
 	tecs_data.target_track_angle = alt_2_tt_angle_val.out / tecs_data.air_speed;
 	
 	//计算目标空速微分
-	pid_calcu(dT_s, flight_arg.target_air_speed, tecs_data.air_speed, 
+	pid_calcu(dT_s, fl_par.par.target_air_speed, tecs_data.air_speed, 
 	&spd_2_t_spd_diff_arg, &spd_2_t_spd_diff_val, 0, 0);
 	tecs_data.target_air_spd_diff = alt_2_tt_angle_val.out;
 	

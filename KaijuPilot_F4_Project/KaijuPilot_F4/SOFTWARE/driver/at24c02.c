@@ -46,11 +46,22 @@ void DRV_AT24_Write_Str(u8* str, u8 len, u8 addr)
 	
 	for(i = 0; i < len; i++)
 	{
-		DRV_IIC_Start();
-		DRV_IIC_Send_Byte(WRITE_COMMAND);
-		DRV_IIC_Send_Byte(addr+i);
-		DRV_IIC_Send_Byte(str[i]);
-		DRV_IIC_Stop();
+		DRV_AT24_Write_Byte(str[i], addr+i);
 		delay_ms(5);
 	}
+}
+
+/*******************************************************************************
+* 函 数 名         : DRV_AT24_Write_Byte
+* 函数功能		     : 向AT24写入一个字节
+* 输    入         : byte 地址
+* 输    出         : 无
+*******************************************************************************/
+void DRV_AT24_Write_Byte(u8 byte, u8 addr)
+{
+	DRV_IIC_Start();
+	DRV_IIC_Send_Byte(WRITE_COMMAND);
+	DRV_IIC_Send_Byte(addr);
+	DRV_IIC_Send_Byte(byte);
+	DRV_IIC_Stop();
 }

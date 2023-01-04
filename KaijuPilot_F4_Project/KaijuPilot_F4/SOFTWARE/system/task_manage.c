@@ -4,6 +4,7 @@
 #include "led.h"
 #include "remote_signal.h"
 #include "flight_ctrl.h"
+#include "par_manage.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -32,7 +33,7 @@ void app_task_reate(void)
 				 
 	xTaskCreate(task_20ms,           /* 任务函数名 */
                 "task_20ms",         /* 任务名，字符串形式，方便调试 */
-                 1024,                /* 栈大小，单位为字，即4个字节 */
+                 2048,                /* 栈大小，单位为字，即4个字节 */
                  NULL,               /* 任务形参 */
                  30,                  /* 优先级，数值越大，优先级越高 */
                  NULL);  /* 任务句柄 */
@@ -55,6 +56,8 @@ void task_1ms(void *pvParameters)
 		IMU_Calcu(0.001);
 		IMU_RPY_Calcu();
 		IMU_Data_Share();
+		MSG_Ctrl_Task(1);
+		PAR_Store_Task(1);
 		vTaskDelayUntil( &xLastWakeTime, 1 );
 	}
 }
@@ -72,8 +75,9 @@ void task_20ms(void *pvParameters)
 	while(1)
 	{
 		RC_Offline_Check(20);
-		MSG_Send();
+		RC_Data_Share();
 		Flight_Ctrl_Task(20);
+		Flight_Data_Share();
 		vTaskDelayUntil( &xLastWakeTime, 20 );
 	}
 }

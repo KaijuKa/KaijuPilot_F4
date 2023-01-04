@@ -60,13 +60,10 @@ void systick_it_init(void)
 
 void SysTick_Handler(void)
 {
+	systime_ms++;
 	if(RTOS_en)
 	{
 		xPortSysTickHandler();
-	}
-	else
-	{
-		systime_ms++;
 	}
 }
 

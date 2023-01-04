@@ -1,6 +1,6 @@
 #include "pwm.h"
 #include "kaiju_math.h"
-#include "arg_manage.h"
+#include "par_manage.h"
 
 /*******************************************************************************
 * 函 数 名         : DRV_PWM_Init
@@ -102,21 +102,21 @@ void DRV_PWM_Output(s16 ch1, s16 ch2, s16 ch3, s16 ch4)
 	s16 ch2_output_triangle;
 	
 	//舵面偏置
-	ch1 += flight_arg.ch1_offset;
-	ch2 += flight_arg.ch2_offset;
-	ch3 += flight_arg.ch3_offset;
-	ch4 += flight_arg.ch4_offset;
+	ch1 += fl_par.par.ch1_offset;
+	ch2 += fl_par.par.ch2_offset;
+	ch3 += fl_par.par.ch3_offset;
+	ch4 += fl_par.par.ch4_offset;
 	
 	//舵面方向
-	if(0 != flight_arg.ch1_direct)
+	if(0 != fl_par.par.ch1_direct)
 	{
 		ch1 = -ch1;
 	}
-	if(0 != flight_arg.ch2_direct)
+	if(0 != fl_par.par.ch2_direct)
 	{
 		ch2 = -ch2;
 	}
-	if(0 != flight_arg.ch4_direct)
+	if(0 != fl_par.par.ch4_direct)
 	{
 		ch4 = -ch4;
 	}
@@ -128,7 +128,7 @@ void DRV_PWM_Output(s16 ch1, s16 ch2, s16 ch3, s16 ch4)
 	ch4 = LIMIT(ch4, -500, 500);
 	
 	//三角翼输出
-	if(0 == flight_arg.ctrl_mode)
+	if(0 == fl_par.par.ctrl_mode)
 	{
 		//混合再限幅
 		ch1_output_triangle = LIMIT(ch2+ch1, -500, 500);

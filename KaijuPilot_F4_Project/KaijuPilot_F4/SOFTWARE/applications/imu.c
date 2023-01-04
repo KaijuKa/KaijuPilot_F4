@@ -3,6 +3,7 @@
 #include "delay.h"
 #include "icm20602.h"
 #include "kaiju_math.h"
+#include "par_manage.h"
 
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -30,7 +31,7 @@ gyro遵守右手定则, 拇指指向坐标轴正方向 四指方向为角速度正方向
 
 //经过matlab椭球拟合出的acc x,y,z 
 static MPU_Data_structure mpu_data = {0,0,0,0,0,0,0,0,0,0,0,0,-34.8312f,89.6591f,42.8492f,0};
-static IMU_Data_structure imu_data = {1,0,0,0,
+IMU_Data_structure imu_data = {1,0,0,0,
 							0,0,0,
 							0,0,0,
 							0,0,0,
@@ -287,8 +288,8 @@ void IMU_RPY_Calcu(void)
 	
 	if(z_vec[2]>0.05f || z_vec[2]<-0.05f)
 	{
-		imu_data.pit =  fast_atan2(imu_data.att_matrix[2][1], imu_data.att_matrix[2][2])*57.30f;
-		imu_data.rol =   -fast_atan2(imu_data.att_matrix[2][0], my_sqrt(t_temp))*57.30f;
+		imu_data.pit =  fast_atan2(imu_data.att_matrix[2][1], imu_data.att_matrix[2][2])*57.30f - fl_par.par.pit_offset/100.0f;
+		imu_data.rol =   -fast_atan2(imu_data.att_matrix[2][0], my_sqrt(t_temp))*57.30f - fl_par.par.rol_offset/100.0f;
 		imu_data.yaw =  fast_atan2(imu_data.att_matrix[1][0], imu_data.att_matrix[0][0])*57.30f; 
 	}
 }

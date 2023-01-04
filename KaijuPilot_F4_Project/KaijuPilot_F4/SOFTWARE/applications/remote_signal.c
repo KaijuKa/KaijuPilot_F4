@@ -3,8 +3,15 @@
 #include "kaiju_math.h"
 #include "uart.h"
 
+#include "FreeRTOS.h"
+#include "queue.h"
+
 RC_Data_structure rc_data;
+
+QueueHandle_t rc_data_queue = NULL;
+
 u16 deadline_count;
+
 
 /*******************************************************************************
 * 函 数 名         : RC_Init
@@ -36,6 +43,30 @@ void RC_Offline_Check(u8 dT_ms)
 	RC_PPM_Offline_Check(dT_ms);
 	RC_PPM_Data_Limited();
 #endif
+}
+
+/*******************************************************************************
+* 函 数 名         : RC_Data_Share
+* 函数功能		     : rc数据写入消息队列供分享
+* 输    入         : 无
+* 输    出         : 无
+*******************************************************************************/
+void RC_Data_Share(void)
+{
+	static u8 isFullQueue = 0;
+	
+	if(0 == isFullQueue)
+	{
+		isFullQueue = 1;
+		//创建消息队列并写入
+		rc_data_queue = xQueueCreate(1, sizeof(rc_data.ch_processed));
+		xQueueSend(rc_data_queue, (void *)rc_data.ch_processed, 0);
+	}
+	else
+	{
+		//消息队列覆写
+		xQueueOverwrite(rc_data_queue, (void *)rc_data.ch_processed);
+	}
 }
 
 /*******************************************************************************
@@ -127,7 +158,7 @@ void RC_SBUS_Analysis(void)
 {
 	u8 i;
 	//通道值计算
-	for(i = 0;i<8;i++)
+	for(i = 0;i<CH_NUM;i++)
 	{
 		rc_data.ch_processed[i] = 0.644f * (rc_data.sbus_ch[i] - 1000);
 		

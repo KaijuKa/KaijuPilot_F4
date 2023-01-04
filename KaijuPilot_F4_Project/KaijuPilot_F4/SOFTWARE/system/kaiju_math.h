@@ -12,6 +12,7 @@
 #define LIMIT( x,min,max ) ( ((x) <= (min)) ? (min) : ( ((x) > (max))? (max) : (x) ) )
 #define my_pow(a) ((a)*(a))
 
+//PID参数结构体
 typedef struct{
 	float kp;         //p系数
 	float kd;         //d系数
@@ -20,6 +21,7 @@ typedef struct{
 	float fb_kd;      //反馈值d系数
 } PID_ARG_structure;
 
+//PID数据结构体
 typedef struct{
 	float expect_old; //上次的期望值
 	float fb_old;     //上次的反馈值

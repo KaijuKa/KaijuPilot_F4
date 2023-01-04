@@ -20,6 +20,7 @@
 #define kp_use 0.2f       //(0.3f + 0.1f*(float)temp_2/500.0f)
 #define filter_k 0.22f    //(0.3f + 0.3f*(float)temp_3/500.0f)
 
+//mpu数据结构体
 typedef struct{
 	s16 gyro_x_raw;       //角速度 系数：0.061    即角速度 度/s = 0.061*gyro_X
 	s16 gyro_y_raw;
@@ -45,6 +46,7 @@ typedef struct{
 } MPU_Data_structure;
 
 //imu中角速度单位为rad/s
+//imu姿态解算结构体
 typedef struct{
 	float w;            //4元数
 	float x;
@@ -71,6 +73,7 @@ typedef struct{
 	
 } IMU_Data_structure;
 
+extern IMU_Data_structure imu_data;
 extern QueueHandle_t imu_data_queue;
 	
 u8 MPU_GYRO_Calibration(void);

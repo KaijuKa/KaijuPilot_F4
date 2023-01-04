@@ -3,12 +3,16 @@
 
 #include "stm32f4xx.h"
 
+#include "FreeRTOS.h"
+#include "queue.h"
+
 #define OFFLINE_DEADLINE 2000
 #define PULSE_MIN 800
 #define PULSE_MAX 2200
 
 #define IS_SBUS
 
+//遥控信号解析结构体
 typedef struct{
 	s16 sbus_ch[16];      //sbus接收到的原始数据
 	u16 ppm_ch[8];        //ppm接收到的原始数据
@@ -20,21 +24,24 @@ typedef struct{
 
 enum
 {
- CH_ROL = 0,
- CH_PIT ,
- CH_THR ,
- CH_YAW ,
- AUX1 ,
- AUX2 ,
- AUX3 ,
- AUX4 ,
+ CH_ROL = 0, //横滚
+ CH_PIT ,    //俯仰
+ CH_THR ,    //油门
+ CH_YAW ,    //偏航
+ AUX1 ,      //功能开关1
+ AUX2 ,      //功能开关2
+ AUX3 ,      //功能开关3
+ AUX4 ,      //功能开关4
  CH_NUM,//8
 };
 
 extern RC_Data_structure rc_data;
 
+extern QueueHandle_t rc_data_queue;
+
 void RC_Init(void);
 void RC_Offline_Check(u8 dT_ms);
+void RC_Data_Share(void);
 
 void RC_SBUS_ByteGet(u8 data);
 void RC_SBUS_Analysis(void);

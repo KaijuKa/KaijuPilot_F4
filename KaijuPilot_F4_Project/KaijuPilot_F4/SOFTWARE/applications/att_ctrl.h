@@ -10,6 +10,7 @@ extern PID_VAL_structure pit_val_L1;
 extern PID_VAL_structure rol_val_L2;
 extern PID_VAL_structure pit_val_L2;
 
+//滚转控制结构体
 typedef struct{
 	float w;           //期望姿态四元数
 	float x;

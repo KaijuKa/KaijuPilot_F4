@@ -1,5 +1,6 @@
 #include "uart.h"
 #include "remote_signal.h"
+#include "msg_interchange.h"
 
 #if 1
 #pragma import(__use_no_semihosting)             
@@ -102,7 +103,7 @@ void USART1_IRQHandler(void)
 	{
 		USART_ClearITPendingBit(USART1, USART_IT_RXNE);
 		com_data = USART_ReceiveData(USART1); //读取接收到的数据
-		Rx_data = com_data;
+		MSG_RECV_ByteGet(com_data);
 	}
 	
 	if (USART_GetITStatus(USART1,USART_IT_TXE))
