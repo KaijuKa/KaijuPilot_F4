@@ -36,4 +36,4 @@
 ..\obj\pwm.o: ..\FWLIB\inc\stm32f4xx_dcmi.h
 ..\obj\pwm.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
 ..\obj\pwm.o: ..\SOFTWARE\system\kaiju_math.h
-..\obj\pwm.o: ..\SOFTWARE\system\arg_manage.h
+..\obj\pwm.o: ..\SOFTWARE\system\par_manage.h

@@ -35,10 +35,6 @@
 ..\obj\flight_ctrl.o: ..\FWLIB\inc\stm32f4xx_dac.h
 ..\obj\flight_ctrl.o: ..\FWLIB\inc\stm32f4xx_dcmi.h
 ..\obj\flight_ctrl.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
-..\obj\flight_ctrl.o: ..\SOFTWARE\applications\remote_signal.h
-..\obj\flight_ctrl.o: ..\SOFTWARE\driver\pwm.h
-..\obj\flight_ctrl.o: ..\SOFTWARE\system\arg_manage.h
-..\obj\flight_ctrl.o: ..\SOFTWARE\applications\imu.h
 ..\obj\flight_ctrl.o: ..\FreeRTOS\include\FreeRTOS.h
 ..\obj\flight_ctrl.o: D:\keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
 ..\obj\flight_ctrl.o: ..\FreeRTOS\include\FreeRTOSConfig.h
@@ -50,5 +46,9 @@
 ..\obj\flight_ctrl.o: ..\FreeRTOS\include\queue.h
 ..\obj\flight_ctrl.o: ..\FreeRTOS\include\task.h
 ..\obj\flight_ctrl.o: ..\FreeRTOS\include\list.h
+..\obj\flight_ctrl.o: ..\SOFTWARE\applications\remote_signal.h
+..\obj\flight_ctrl.o: ..\SOFTWARE\driver\pwm.h
+..\obj\flight_ctrl.o: ..\SOFTWARE\system\par_manage.h
+..\obj\flight_ctrl.o: ..\SOFTWARE\applications\imu.h
 ..\obj\flight_ctrl.o: ..\SOFTWARE\applications\att_ctrl.h
 ..\obj\flight_ctrl.o: ..\SOFTWARE\system\kaiju_math.h

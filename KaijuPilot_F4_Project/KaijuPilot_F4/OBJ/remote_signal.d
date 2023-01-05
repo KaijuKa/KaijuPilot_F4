@@ -35,6 +35,17 @@
 ..\obj\remote_signal.o: ..\FWLIB\inc\stm32f4xx_dac.h
 ..\obj\remote_signal.o: ..\FWLIB\inc\stm32f4xx_dcmi.h
 ..\obj\remote_signal.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
+..\obj\remote_signal.o: ..\FreeRTOS\include\FreeRTOS.h
+..\obj\remote_signal.o: D:\keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\obj\remote_signal.o: ..\FreeRTOS\include\FreeRTOSConfig.h
+..\obj\remote_signal.o: ..\FreeRTOS\include\projdefs.h
+..\obj\remote_signal.o: ..\FreeRTOS\include\portable.h
+..\obj\remote_signal.o: ..\FreeRTOS\include\deprecated_definitions.h
+..\obj\remote_signal.o: ..\FreeRTOS\portable\RVDS\ARM_CM4F\portmacro.h
+..\obj\remote_signal.o: ..\FreeRTOS\include\mpu_wrappers.h
+..\obj\remote_signal.o: ..\FreeRTOS\include\queue.h
+..\obj\remote_signal.o: ..\FreeRTOS\include\task.h
+..\obj\remote_signal.o: ..\FreeRTOS\include\list.h
 ..\obj\remote_signal.o: ..\SOFTWARE\system\delay.h
 ..\obj\remote_signal.o: ..\SOFTWARE\system\kaiju_math.h
 ..\obj\remote_signal.o: ..\SOFTWARE\driver\uart.h

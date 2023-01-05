@@ -243,7 +243,7 @@ void pid_calcu(float dT_s,                 //周期
 	//计算结果并更新pid_val
 	pid_val->out = err * pid_arg->kp
 					+ err_d * pid_arg->kd
-					+ pid_val->err_i * pid_arg->ki;
+					+ pid_val->err_i;
 	
 	//调试用
 	pid_val->err = err * pid_arg->kp;

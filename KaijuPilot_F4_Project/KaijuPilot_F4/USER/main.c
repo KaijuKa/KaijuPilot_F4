@@ -8,8 +8,9 @@
 #include "task_manage.h"
 #include "remote_signal.h"
 #include "iic.h"
-#include "arg_manage.h"
+#include "par_manage.h"
 #include "pwm.h"
+#include "msg_interchange.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -27,7 +28,8 @@ int main(void)
 	DRV_PWM_Init();        //初始化PWM
 	DRV_Icm20602_Init();   //初始化icm20602
 	IMU_Init();            //初始化IMU
-//	ARG_Load();            //读取全部参数
+	DT_MSG_Init();         //初始化数据传输
+	PAR_Load();            //读取全部参数
 	
 	//常亮1s表示初始化完成
 	DRV_LED_LIGHTING(1);

@@ -572,16 +572,6 @@
           <GroupName>SYSTEM</GroupName>
           <Files>
             <File>
-              <FileName>arg_manage.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\SOFTWARE\system\arg_manage.c</FilePath>
-            </File>
-            <File>
-              <FileName>arg_manage.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\SOFTWARE\system\arg_manage.h</FilePath>
-            </File>
-            <File>
               <FileName>kaiju_math.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\SOFTWARE\system\kaiju_math.c</FilePath>
@@ -610,6 +600,16 @@
               <FileName>task_manage.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\SOFTWARE\system\task_manage.h</FilePath>
+            </File>
+            <File>
+              <FileName>par_manage.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\system\par_manage.c</FilePath>
+            </File>
+            <File>
+              <FileName>par_manage.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SOFTWARE\system\par_manage.h</FilePath>
             </File>
           </Files>
         </Group>

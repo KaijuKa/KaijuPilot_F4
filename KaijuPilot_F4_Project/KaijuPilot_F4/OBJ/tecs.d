@@ -36,4 +36,4 @@
 ..\obj\tecs.o: ..\FWLIB\inc\stm32f4xx_dcmi.h
 ..\obj\tecs.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
 ..\obj\tecs.o: ..\SOFTWARE\system\kaiju_math.h
-..\obj\tecs.o: ..\SOFTWARE\system\arg_manage.h
+..\obj\tecs.o: ..\SOFTWARE\system\par_manage.h

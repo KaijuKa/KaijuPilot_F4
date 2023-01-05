@@ -48,4 +48,4 @@
 ..\obj\att_ctrl.o: ..\FreeRTOS\include\queue.h
 ..\obj\att_ctrl.o: ..\FreeRTOS\include\task.h
 ..\obj\att_ctrl.o: ..\FreeRTOS\include\list.h
-..\obj\att_ctrl.o: ..\SOFTWARE\system\arg_manage.h
+..\obj\att_ctrl.o: ..\SOFTWARE\system\par_manage.h

@@ -51,3 +51,4 @@
 ..\obj\imu.o: ..\SOFTWARE\system\delay.h
 ..\obj\imu.o: ..\SOFTWARE\driver\icm20602.h
 ..\obj\imu.o: ..\SOFTWARE\system\kaiju_math.h
+..\obj\imu.o: ..\SOFTWARE\system\par_manage.h

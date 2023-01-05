@@ -51,3 +51,4 @@
 ..\obj\task_manage.o: ..\SOFTWARE\driver\led.h
 ..\obj\task_manage.o: ..\SOFTWARE\applications\remote_signal.h
 ..\obj\task_manage.o: ..\SOFTWARE\applications\flight_ctrl.h
+..\obj\task_manage.o: ..\SOFTWARE\system\par_manage.h

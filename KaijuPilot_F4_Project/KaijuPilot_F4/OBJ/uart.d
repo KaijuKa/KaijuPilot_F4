@@ -37,3 +37,15 @@
 ..\obj\uart.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
 ..\obj\uart.o: D:\keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ..\obj\uart.o: ..\SOFTWARE\applications\remote_signal.h
+..\obj\uart.o: ..\FreeRTOS\include\FreeRTOS.h
+..\obj\uart.o: D:\keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\obj\uart.o: ..\FreeRTOS\include\FreeRTOSConfig.h
+..\obj\uart.o: ..\FreeRTOS\include\projdefs.h
+..\obj\uart.o: ..\FreeRTOS\include\portable.h
+..\obj\uart.o: ..\FreeRTOS\include\deprecated_definitions.h
+..\obj\uart.o: ..\FreeRTOS\portable\RVDS\ARM_CM4F\portmacro.h
+..\obj\uart.o: ..\FreeRTOS\include\mpu_wrappers.h
+..\obj\uart.o: ..\FreeRTOS\include\queue.h
+..\obj\uart.o: ..\FreeRTOS\include\task.h
+..\obj\uart.o: ..\FreeRTOS\include\list.h
+..\obj\uart.o: ..\SOFTWARE\applications\msg_interchange.h

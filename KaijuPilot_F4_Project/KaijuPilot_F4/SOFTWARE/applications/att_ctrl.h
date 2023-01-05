@@ -22,6 +22,11 @@ typedef struct{
 	float y_err;
 	float z_err;
 	
+	float w_last;      //上次期望姿态四元数
+	float x_last;
+	float y_last;
+	float z_last;
+	
 	float expect_rol_spd_lpf; //滤波后期望角速度
 	float expect_pit_spd_lpf;
 	
