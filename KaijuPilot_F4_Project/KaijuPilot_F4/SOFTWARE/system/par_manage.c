@@ -130,11 +130,8 @@ void PAR_Change(u8 par_id, float par_val)
 	static u8 cnt = 0;
 	
 	//接收完毕所有参数进行保存
-	if(cnt < PAR_NUM)
-	{
-		cnt ++;
-	}
-	else
+	cnt ++;
+	if(cnt >= PAR_NUM)
 	{
 		cnt = 0;
 		is_start_store = 1;

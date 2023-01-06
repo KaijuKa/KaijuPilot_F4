@@ -63,13 +63,11 @@ void ATT_VAL_Init(void)
 	rol_val_L2.expect_old = 0;
 	rol_val_L2.err_old = 0;
 	rol_val_L2.out = 0;
-	rol_val_L2.err_i = 0;
 	rol_val_L2.fb_old = 0;
 	
 	pit_val_L2.expect_old = 0;
 	pit_val_L2.err_old = 0;
 	pit_val_L2.out = 0;
-	pit_val_L2.err_i = 0;
 	pit_val_L2.fb_old = 0;
 	
 	rol_val_L1.expect_old = 0;
@@ -499,6 +497,13 @@ void Rotation_Ctrl2(float dT_s, float expect_rol_spd, float expect_pit_spd, u8 i
 	
 	rotation_data.expect_pit_err = fast_atan2(2*q2q3 + 2*q0q1, 1- (2*q1q1 + 2*q2q2))*57.30f;
 	rotation_data.expect_rol_err = -fast_atan2(2*q1q3 - 2*q0q2, my_sqrt(t_temp))*57.30f;
+	
+	//限制偏角
+	rotation_data.expect_pit_err = LIMIT(rotation_data.expect_pit_err, 
+		-fl_par.par.pit_angular_spd_max*dT_s, fl_par.par.pit_angular_spd_max*dT_s);
+		
+	rotation_data.expect_rol_err = LIMIT(rotation_data.expect_rol_err, 
+		-fl_par.par.rol_angular_spd_max*dT_s, fl_par.par.rol_angular_spd_max*dT_s);
 	
 	//外环 level2
 	pid_calcu(dT_s, rotation_data.expect_rol_err, 0, &rol_arg_L2, &rol_val_L2, 200, inter_en);
