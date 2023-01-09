@@ -25,13 +25,12 @@ enum
 {
 	MSG_ID_MPU ,   //MPU信息
 	MSG_ID_IMU ,   //imu欧拉角信息
-	MSG_ID_IMU2 ,  //imu四元数信息
 	MSG_ID_HIGHT , //高度信息
 	MSG_ID_SPD ,   //速度信息
 	MSG_ID_PWM ,   //pwm输出值信息
 	MSG_ID_GPS ,   //gps位置信息
 	MSG_ID_RC ,    //遥控信息
-	DT_MSG_NUM,//8
+	DT_MSG_NUM,//7
 };
 
 //方便遍历

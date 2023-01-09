@@ -3,7 +3,7 @@
 <title>Static Call Graph - [..\OBJ\KaijuPilot_F4.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image ..\OBJ\KaijuPilot_F4.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Fri Jan 06 16:36:55 2023
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060061: Last Updated: Mon Jan 09 10:26:34 2023
 <BR><P>
 <H3>Maximum Stack Usage =        592 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -936,7 +936,7 @@ Global Symbols
 <LI><a href="#[c7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DT_MSG_Frame_Send
 </UL>
 
-<P><STRONG><a name="[c7]"></a>DT_MSG_Frame_Send</STRONG> (Thumb, 1496 bytes, Stack size 88 bytes, msg_interchange.o(i.DT_MSG_Frame_Send))
+<P><STRONG><a name="[c7]"></a>DT_MSG_Frame_Send</STRONG> (Thumb, 1234 bytes, Stack size 88 bytes, msg_interchange.o(i.DT_MSG_Frame_Send))
 <BR><BR>[Stack]<UL><LI>Max Depth = 216<LI>Call Chain = DT_MSG_Frame_Send &rArr; xQueuePeek &rArr; prvUnlockQueue &rArr; prvNotifyQueueSetContainer &rArr; prvCopyDataToQueue &rArr; xTaskPriorityDisinherit
 </UL>
 <BR>[Calls]<UL><LI><a href="#[c6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DRV_USART1_Send
@@ -946,7 +946,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[da]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MSG_Ctrl_Task
 </UL>
 
-<P><STRONG><a name="[106]"></a>DT_MSG_Init</STRONG> (Thumb, 38 bytes, Stack size 0 bytes, msg_interchange.o(i.DT_MSG_Init))
+<P><STRONG><a name="[106]"></a>DT_MSG_Init</STRONG> (Thumb, 34 bytes, Stack size 0 bytes, msg_interchange.o(i.DT_MSG_Init))
 <BR><BR>[Called By]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -1106,7 +1106,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;task_1ms
 </UL>
 
-<P><STRONG><a name="[dc]"></a>MSG_RECV_Analysis</STRONG> (Thumb, 148 bytes, Stack size 24 bytes, msg_interchange.o(i.MSG_RECV_Analysis))
+<P><STRONG><a name="[dc]"></a>MSG_RECV_Analysis</STRONG> (Thumb, 182 bytes, Stack size 24 bytes, msg_interchange.o(i.MSG_RECV_Analysis))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = MSG_RECV_Analysis
 </UL>
 <BR>[Calls]<UL><LI><a href="#[dd]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;PAR_Change

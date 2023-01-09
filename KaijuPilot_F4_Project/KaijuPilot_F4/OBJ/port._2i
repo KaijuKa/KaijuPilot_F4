@@ -1,0 +1,6 @@
+--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\CORE -I ..\FWLIB\inc -I ..\USER -I ..\SOFTWARE\applications -I ..\SOFTWARE\system -I ..\SOFTWARE\driver -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\RVDS\ARM_CM4F
+-I.\RTE\_KaijuPilot
+-ID:\keil_v5\ARM\PACK\STM32F4xx_DFP\1.0.8\Device\Include
+-ID:\keil_v5\ARM\CMSIS\Include
+-D__UVISION_VERSION="525" -DSTM32F40_41xxx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER
+-o ..\obj\port.o --omf_browse ..\obj\port.crf --depend ..\obj\port.d --feedback "..\OBJ\KaijuPilot_F4.fed" "..\FreeRTOS\portable\RVDS\ARM_CM4F\port.c"

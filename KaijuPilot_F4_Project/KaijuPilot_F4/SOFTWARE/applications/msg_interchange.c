@@ -15,7 +15,7 @@ MSG_Ctrl_structure dt_msg_array[DT_MSG_NUM];
 MSG_Ctrl_structure tg_msg_array[TG_MSG_NUM];
 
 //枚举对应到真实的帧ID
-u8 DT_MSG_ID_ARRAY[DT_MSG_NUM] = {0x01, 0x03, 0x04, 0x05, 0x07, 0x20, 0x30, 0x40};
+u8 DT_MSG_ID_ARRAY[DT_MSG_NUM] = {0x01, 0x03, 0x05, 0x07, 0x20, 0x30, 0x40};
 
 u8 TG_MSG_ID_ARRAY[TG_MSG_NUM] = {0xE0, 0xE1, 0xE2, 0xE3, 0x00};
 
@@ -32,9 +32,6 @@ void DT_MSG_Init(void)
 	
 	//欧拉角
 	dt_msg_array[MSG_ID_IMU].dt_ms = 20;
-	
-	//四元数
-	dt_msg_array[MSG_ID_IMU2].dt_ms = 20;
 	
 	//高度
 	dt_msg_array[MSG_ID_HIGHT].dt_ms = 200;
@@ -166,8 +163,11 @@ void DT_MSG_Frame_Send(u8 fun_id)
 		//包装imu欧拉角信息成消息帧并发送
 		case MSG_ID_IMU:
 		{
-			buf[cnt++] = 7;
+			buf[cnt++] = 8;
 			buf[cnt++] = 0;
+			
+			//欧拉角模式
+			buf[cnt++] = 1;
 			
 			s16_tmp = (s16)(imu_data.rol*100);
 			buf[cnt++] = BYTE0(s16_tmp);
@@ -180,39 +180,6 @@ void DT_MSG_Frame_Send(u8 fun_id)
 			s16_tmp = (s16)(imu_data.yaw*100);
 			buf[cnt++] = BYTE0(s16_tmp);
 			buf[cnt++] = BYTE1(s16_tmp);
-			
-			buf[cnt++] = 0;
-			
-			//添加校验字段
-			MSG_Check_ADD(buf, cnt);
-			
-			//发送
-			DRV_USART1_Send(buf, cnt+2);
-		}
-		break;
-		
-		//包装imu四元数信息成消息帧并发送
-		case MSG_ID_IMU2:
-		{
-			buf[cnt++] = 9;
-			buf[cnt++] = 0;
-			
-			s16_tmp = (s16)(imu_data.w*10000);
-			buf[cnt++] = BYTE0(s16_tmp);
-			buf[cnt++] = BYTE1(s16_tmp);
-			
-			s16_tmp = (s16)(imu_data.x*10000);
-			buf[cnt++] = BYTE0(s16_tmp);
-			buf[cnt++] = BYTE1(s16_tmp);
-			
-			s16_tmp = (s16)(imu_data.y*10000);
-			buf[cnt++] = BYTE0(s16_tmp);
-			buf[cnt++] = BYTE1(s16_tmp);
-			
-			s16_tmp = (s16)(imu_data.z*10000);
-			buf[cnt++] = BYTE0(s16_tmp);
-			buf[cnt++] = BYTE1(s16_tmp);
-			
 			
 			buf[cnt++] = 0;
 			
@@ -607,15 +574,22 @@ void MSG_RECV_Analysis(u8 len)
 	//修改参数
 	else if(msg_recv_buf[3] == 0xE1)
 	{
-		u16 per_id;
-		float per_val;
+		u16 par_id;
+		u8 tmp_array[4];
+		float par_val;
 		
 		//msg_info为目标参数的ID
 		tg_msg_array[MSG_ID_ACK].wait2send = 1;
 		tg_msg_array[MSG_ID_ACK].msg_info = *((u16 *)&(msg_recv_buf[12]));
-		per_id = *((u16 *)&(msg_recv_buf[6]));
-		per_val = *((float *)&(msg_recv_buf[8]));
-		PAR_Change(per_id, per_val);
+		par_id = *((u16 *)&(msg_recv_buf[6]));
+		
+		//float数据4字节没有对齐会进入hardfault
+		tmp_array[0] = msg_recv_buf[8];
+		tmp_array[1] = msg_recv_buf[9];
+		tmp_array[2] = msg_recv_buf[10];
+		tmp_array[3] = msg_recv_buf[11];
+		par_val = *((float *)(tmp_array));
+		PAR_Change(par_id, par_val);
 	}
 }
 

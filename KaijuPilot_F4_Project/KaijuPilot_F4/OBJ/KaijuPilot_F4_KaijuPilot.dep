@@ -57,7 +57,7 @@ I (..\SOFTWARE\applications\remote_signal.h)(0x63B55452)
 I (..\SOFTWARE\driver\iic.h)(0x63B03571)
 I (..\SOFTWARE\system\par_manage.h)(0x63B55593)
 I (..\SOFTWARE\driver\pwm.h)(0x63A94813)
-I (..\SOFTWARE\applications\msg_interchange.h)(0x63B55349)
+I (..\SOFTWARE\applications\msg_interchange.h)(0x63BA985F)
 F (..\USER\stm32f4xx.h)(0x5A386984)()
 F (..\USER\stm32f4xx_conf.h)(0x58221742)()
 F (..\USER\stm32f4xx_it.c)(0x63A830D0)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\CORE -I ..\FWLIB\inc -I ..\USER -I ..\SOFTWARE\applications -I ..\SOFTWARE\system -I ..\SOFTWARE\driver -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\RVDS\ARM_CM4F-I.\RTE\_KaijuPilot-ID:\keil_v5\ARM\PACK\STM32F4xx_DFP\1.0.8\Device\Include-ID:\keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F40_41xxx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\stm32f4xx_it.o --omf_browse ..\obj\stm32f4xx_it.crf --depend ..\obj\stm32f4xx_it.d)
@@ -344,8 +344,8 @@ I (..\SOFTWARE\applications\imu.h)(0x63B5541A)
 I (..\SOFTWARE\applications\att_ctrl.h)(0x63B6BD8A)
 I (..\SOFTWARE\system\kaiju_math.h)(0x63B554B9)
 F (..\SOFTWARE\applications\flight_ctrl.h)(0x63B5548C)()
-F (..\SOFTWARE\applications\msg_interchange.c)(0x63B56759)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\CORE -I ..\FWLIB\inc -I ..\USER -I ..\SOFTWARE\applications -I ..\SOFTWARE\system -I ..\SOFTWARE\driver -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\RVDS\ARM_CM4F-I.\RTE\_KaijuPilot-ID:\keil_v5\ARM\PACK\STM32F4xx_DFP\1.0.8\Device\Include-ID:\keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F40_41xxx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\msg_interchange.o --omf_browse ..\obj\msg_interchange.crf --depend ..\obj\msg_interchange.d)
-I (..\SOFTWARE\applications\msg_interchange.h)(0x63B55349)
+F (..\SOFTWARE\applications\msg_interchange.c)(0x63BB79C6)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\CORE -I ..\FWLIB\inc -I ..\USER -I ..\SOFTWARE\applications -I ..\SOFTWARE\system -I ..\SOFTWARE\driver -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\RVDS\ARM_CM4F-I.\RTE\_KaijuPilot-ID:\keil_v5\ARM\PACK\STM32F4xx_DFP\1.0.8\Device\Include-ID:\keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F40_41xxx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\msg_interchange.o --omf_browse ..\obj\msg_interchange.crf --depend ..\obj\msg_interchange.d)
+I (..\SOFTWARE\applications\msg_interchange.h)(0x63BA985F)
 I (..\USER\stm32f4xx.h)(0x5A386984)
 I (..\CORE\core_cm4.h)(0x581CC64D)
 I (D:\keil_v5\ARM\ARMCC\include\stdint.h)(0x569DEA3A)
@@ -399,7 +399,7 @@ I (..\SOFTWARE\applications\att_ctrl.h)(0x63B6BD8A)
 I (..\SOFTWARE\system\kaiju_math.h)(0x63B554B9)
 I (..\SOFTWARE\applications\flight_ctrl.h)(0x63B5548C)
 I (..\SOFTWARE\system\par_manage.h)(0x63B55593)
-F (..\SOFTWARE\applications\msg_interchange.h)(0x63B55349)()
+F (..\SOFTWARE\applications\msg_interchange.h)(0x63BA985F)()
 F (..\SOFTWARE\applications\route_ctrl.c)(0x63AC2826)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\CORE -I ..\FWLIB\inc -I ..\USER -I ..\SOFTWARE\applications -I ..\SOFTWARE\system -I ..\SOFTWARE\driver -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\RVDS\ARM_CM4F-I.\RTE\_KaijuPilot-ID:\keil_v5\ARM\PACK\STM32F4xx_DFP\1.0.8\Device\Include-ID:\keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F40_41xxx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\route_ctrl.o --omf_browse ..\obj\route_ctrl.crf --depend ..\obj\route_ctrl.d)
 I (..\SOFTWARE\applications\route_ctrl.h)(0x63AC2809)
 I (..\USER\stm32f4xx.h)(0x5A386984)
@@ -601,7 +601,7 @@ I (..\FreeRTOS\include\mpu_wrappers.h)(0x61C2EEAA)
 I (..\FreeRTOS\include\queue.h)(0x61C2EEAA)
 I (..\FreeRTOS\include\task.h)(0x61C2EEAA)
 I (..\FreeRTOS\include\list.h)(0x61C2EEAA)
-I (..\SOFTWARE\applications\msg_interchange.h)(0x63B55349)
+I (..\SOFTWARE\applications\msg_interchange.h)(0x63BA985F)
 F (..\SOFTWARE\driver\uart.h)(0x63B4FFB1)()
 F (..\SOFTWARE\driver\icm20602.c)(0x63A92AB4)(--c99 --gnu -c --cpu Cortex-M4.fp -g -O0 --apcs=interwork --split_sections -I ..\CORE -I ..\FWLIB\inc -I ..\USER -I ..\SOFTWARE\applications -I ..\SOFTWARE\system -I ..\SOFTWARE\driver -I ..\FreeRTOS\include -I ..\FreeRTOS\portable\RVDS\ARM_CM4F-I.\RTE\_KaijuPilot-ID:\keil_v5\ARM\PACK\STM32F4xx_DFP\1.0.8\Device\Include-ID:\keil_v5\ARM\CMSIS\Include-D__UVISION_VERSION="525" -DSTM32F40_41xxx -DSTM32F40_41xxx -DUSE_STDPERIPH_DRIVER-o ..\obj\icm20602.o --omf_browse ..\obj\icm20602.crf --depend ..\obj\icm20602.d)
 I (..\SOFTWARE\driver\icm20602.h)(0x63A82403)
@@ -878,7 +878,7 @@ I (..\FreeRTOS\include\mpu_wrappers.h)(0x61C2EEAA)
 I (..\FreeRTOS\include\queue.h)(0x61C2EEAA)
 I (..\FreeRTOS\include\task.h)(0x61C2EEAA)
 I (..\FreeRTOS\include\list.h)(0x61C2EEAA)
-I (..\SOFTWARE\applications\msg_interchange.h)(0x63B55349)
+I (..\SOFTWARE\applications\msg_interchange.h)(0x63BA985F)
 I (..\SOFTWARE\driver\led.h)(0x63A92CFA)
 I (..\SOFTWARE\applications\remote_signal.h)(0x63B55452)
 I (..\SOFTWARE\applications\flight_ctrl.h)(0x63B5548C)
