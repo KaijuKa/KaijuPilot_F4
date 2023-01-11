@@ -11,9 +11,9 @@
 static void icm20602_enable(u8 ena)
 {
 	if(ena)
-		GPIO_ResetBits(ICM_CS_GPIO_PORT, ICM_CS_GPIO_PIN);
+		GPIO_ResetBits(GPIOA, GPIO_Pin_4);
 	else
-		GPIO_SetBits(ICM_CS_GPIO_PORT, ICM_CS_GPIO_PIN);
+		GPIO_SetBits(GPIOA, GPIO_Pin_4);
 }
 
 /*******************************************************************************
@@ -25,8 +25,8 @@ static void icm20602_enable(u8 ena)
 static void icm20602_readbuf(u8 reg, u8 length, u8 *data)
 {
 	icm20602_enable(1);
-	DRV_SPI_Read_Write_Byte(reg|0x80);
-	DRV_SPI_Receive(data,length);
+	DRV_SPI1_Read_Write_Byte(reg|0x80);
+	DRV_SPI1_Receive(data,length);
 	icm20602_enable(0);
 }
 
@@ -41,8 +41,8 @@ static u8 icm20602_writebyte(u8 reg, u8 data)
 	u8 status;
 	
 	icm20602_enable(1);
-	status = DRV_SPI_Read_Write_Byte(reg);
-	DRV_SPI_Read_Write_Byte(data);
+	status = DRV_SPI1_Read_Write_Byte(reg);
+	DRV_SPI1_Read_Write_Byte(data);
 	icm20602_enable(0);
 	return status;
 }

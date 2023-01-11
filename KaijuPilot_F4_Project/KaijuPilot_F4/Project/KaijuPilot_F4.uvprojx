@@ -133,12 +133,12 @@
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
-            <Capability>0</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <Capability>1</Capability>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -194,7 +194,7 @@
             <RoSelD>3</RoSelD>
             <RwSelD>4</RwSelD>
             <CodeSel>0</CodeSel>
-            <OptFeed>1</OptFeed>
+            <OptFeed>0</OptFeed>
             <NoZi1>0</NoZi1>
             <NoZi2>0</NoZi2>
             <NoZi3>0</NoZi3>
@@ -491,6 +491,16 @@
               <FileType>5</FileType>
               <FilePath>..\SOFTWARE\applications\tecs.h</FilePath>
             </File>
+            <File>
+              <FileName>pos_calcu.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\applications\pos_calcu.c</FilePath>
+            </File>
+            <File>
+              <FileName>pos_calcu.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SOFTWARE\applications\pos_calcu.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -565,6 +575,16 @@
               <FileName>iic.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\SOFTWARE\driver\iic.h</FilePath>
+            </File>
+            <File>
+              <FileName>bmp280.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\driver\bmp280.c</FilePath>
+            </File>
+            <File>
+              <FileName>bmp280.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SOFTWARE\driver\bmp280.h</FilePath>
             </File>
           </Files>
         </Group>

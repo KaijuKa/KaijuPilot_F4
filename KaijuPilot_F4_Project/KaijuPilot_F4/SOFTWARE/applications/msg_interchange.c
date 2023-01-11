@@ -5,6 +5,7 @@
 #include "att_ctrl.h"
 #include "flight_ctrl.h"
 #include "par_manage.h"
+#include "pos_calcu.h"
 
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -34,7 +35,7 @@ void DT_MSG_Init(void)
 	dt_msg_array[MSG_ID_IMU].dt_ms = 20;
 	
 	//高度
-	dt_msg_array[MSG_ID_HIGHT].dt_ms = 200;
+	dt_msg_array[MSG_ID_HIGHT].dt_ms = 50;
 	
 	//飞行速度
 	dt_msg_array[MSG_ID_SPD].dt_ms = 200;
@@ -111,6 +112,7 @@ void DT_MSG_Frame_Send(u8 fun_id)
 	u8 cnt = 0;
 	s16 s16_tmp;
 	u16 u16_tmp;
+	s32 s32_tmp;
 	
 	//构造帧头
 	buf[cnt++] = FRAME_HEAD;
@@ -194,7 +196,28 @@ void DT_MSG_Frame_Send(u8 fun_id)
 		//包装高度信息成消息帧并发送
 		case MSG_ID_HIGHT:
 		{
-
+			buf[cnt++] = 9;
+			buf[cnt++] = 0;
+			
+			s32_tmp = (s32)(pos_data.fusion_height);
+			buf[cnt++] = BYTE0(s32_tmp);
+			buf[cnt++] = BYTE1(s32_tmp);
+			buf[cnt++] = BYTE2(s32_tmp);
+			buf[cnt++] = BYTE3(s32_tmp);
+			
+			s32_tmp = (s32)(pos_data.baro_height_err);
+			buf[cnt++] = BYTE0(s32_tmp);
+			buf[cnt++] = BYTE1(s32_tmp);
+			buf[cnt++] = BYTE2(s32_tmp);
+			buf[cnt++] = BYTE3(s32_tmp);
+			
+			buf[cnt++] = 1;
+			
+			//添加校验字段
+			MSG_Check_ADD(buf, cnt);
+			
+			//发送
+			DRV_USART1_Send(buf, cnt+2);
 		}
 		break;
 		
@@ -512,6 +535,12 @@ void MSG_RECV_ByteGet(u8 data)
 	{
 		msg_recv_buf[state++] = data;
 		len = data;
+		
+		//防止产生数组越界
+		if(len > 30)
+		{
+			state = 0;
+		}
 	}
 	else if(state == len + 7)
 	{

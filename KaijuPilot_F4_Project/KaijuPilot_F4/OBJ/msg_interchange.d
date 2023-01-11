@@ -54,3 +54,4 @@
 ..\obj\msg_interchange.o: ..\SOFTWARE\system\kaiju_math.h
 ..\obj\msg_interchange.o: ..\SOFTWARE\applications\flight_ctrl.h
 ..\obj\msg_interchange.o: ..\SOFTWARE\system\par_manage.h
+..\obj\msg_interchange.o: ..\SOFTWARE\applications\pos_calcu.h

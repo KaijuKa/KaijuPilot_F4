@@ -5,6 +5,7 @@
 #include "remote_signal.h"
 #include "flight_ctrl.h"
 #include "par_manage.h"
+#include "pos_calcu.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -56,6 +57,7 @@ void task_1ms(void *pvParameters)
 		IMU_Calcu(0.001);
 		IMU_RPY_Calcu();
 		IMU_Data_Share();
+		POS_Update(1);
 		MSG_Ctrl_Task(1);
 		PAR_Store_Task(1);
 		vTaskDelayUntil( &xLastWakeTime, 1 );

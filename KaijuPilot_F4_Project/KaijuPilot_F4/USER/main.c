@@ -11,6 +11,8 @@
 #include "par_manage.h"
 #include "pwm.h"
 #include "msg_interchange.h"
+#include "bmp280.h"
+#include "pos_calcu.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -23,11 +25,14 @@ int main(void)
 	DRV_LED_Init();        //初始化led
 	DRV_USART1_Init(57600);//初始化数传
 	RC_Init();             //初始化RC
-	DRV_SPI_Init();        //初始化SPI
+	DRV_SPI1_Init();       //初始化SPI1
+	DRV_SPI2_Init();       //初始化SPI2
 	DRV_IIC_Init();        //初始化IIC
 	DRV_PWM_Init();        //初始化PWM
 	DRV_Icm20602_Init();   //初始化icm20602
+	DRV_Bmp280_Init();     //初始化bmp280
 	IMU_Init();            //初始化IMU
+	POS_Init();            //初始化POS
 	DT_MSG_Init();         //初始化数据传输
 	PAR_Load();            //读取全部参数
 	
@@ -37,6 +42,7 @@ int main(void)
 	DRV_LED_LIGHTING(0);
 	delay_ms(200);
 
+	
 	//启动RTOS
 	RTOS_en = 1;
 	

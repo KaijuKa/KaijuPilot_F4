@@ -58,3 +58,5 @@
 ..\obj\main.o: ..\SOFTWARE\system\par_manage.h
 ..\obj\main.o: ..\SOFTWARE\driver\pwm.h
 ..\obj\main.o: ..\SOFTWARE\applications\msg_interchange.h
+..\obj\main.o: ..\SOFTWARE\driver\bmp280.h
+..\obj\main.o: ..\SOFTWARE\applications\pos_calcu.h
