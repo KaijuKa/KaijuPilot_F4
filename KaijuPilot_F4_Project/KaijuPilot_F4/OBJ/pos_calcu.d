@@ -37,3 +37,17 @@
 ..\obj\pos_calcu.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
 ..\obj\pos_calcu.o: ..\SOFTWARE\driver\bmp280.h
 ..\obj\pos_calcu.o: ..\SOFTWARE\system\delay.h
+..\obj\pos_calcu.o: ..\SOFTWARE\system\kaiju_math.h
+..\obj\pos_calcu.o: ..\SOFTWARE\applications\imu.h
+..\obj\pos_calcu.o: ..\FreeRTOS\include\FreeRTOS.h
+..\obj\pos_calcu.o: D:\keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\obj\pos_calcu.o: ..\FreeRTOS\include\FreeRTOSConfig.h
+..\obj\pos_calcu.o: ..\FreeRTOS\include\projdefs.h
+..\obj\pos_calcu.o: ..\FreeRTOS\include\portable.h
+..\obj\pos_calcu.o: ..\FreeRTOS\include\deprecated_definitions.h
+..\obj\pos_calcu.o: ..\FreeRTOS\portable\RVDS\ARM_CM4F\portmacro.h
+..\obj\pos_calcu.o: ..\FreeRTOS\include\mpu_wrappers.h
+..\obj\pos_calcu.o: ..\FreeRTOS\include\queue.h
+..\obj\pos_calcu.o: ..\FreeRTOS\include\task.h
+..\obj\pos_calcu.o: ..\FreeRTOS\include\list.h
+..\obj\pos_calcu.o: D:\keil_v5\ARM\ARMCC\Bin\..\include\math.h

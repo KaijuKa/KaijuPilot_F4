@@ -5,7 +5,7 @@
 
 typedef struct{
 	float baro_height;
-	float baro_height_err;
+	float baro_height_offset;
 	float fusion_height;
 } POS_Structure;
 
@@ -16,5 +16,4 @@ void RAW_Height_Calibration(void);
 void POS_Update(u8 dT_ms);
 void RAW_Height_Update(u8 dT_ms);
 void Height_Fusion(u8 dT_ms);
-
 #endif

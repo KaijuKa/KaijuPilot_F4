@@ -34,6 +34,8 @@ static MPU_Data_structure mpu_data = {0,0,0,0,0,0,0,0,0,0,0,0,-34.8312f,89.6591f
 IMU_Data_structure imu_data = {1,0,0,0,
 							0,0,0,
 							0,0,0,
+							{0,0,0},
+							{0,0,0},
 							0,0,0,
 							{{0,0,0},
 							{0,0,0},
@@ -237,7 +239,22 @@ void IMU_Calcu(float dT_s)
 	imu_data.att_matrix[2][1] = z_vec[1] = 2*q2q3 + 2*q0q1;
 	imu_data.att_matrix[2][2] = z_vec[2] = 1 - (2*q1q1 + 2*q2q2);
 	
+	// 计算载体坐标下的运动加速度
+	imu_data.a_acc[0] = (s32)(imu_data.acc_x*100 - 981 * z_vec[0]);
+	imu_data.a_acc[1] = (s32)(imu_data.acc_y*100 - 981 * z_vec[1]);
+	imu_data.a_acc[2] = (s32)(imu_data.acc_z*100 - 981 * z_vec[2]);
 	
+	
+  	//计算世界坐标下的运动加速度
+	for(u8 i = 0;i<3;i++)
+	{
+		s32 temp = 0;
+		for(u8 j = 0;j<3;j++)
+		{
+			temp += imu_data.a_acc[j] * imu_data.att_matrix[i][j];
+		}
+		imu_data.w_acc[i] = temp;
+	}
 	
 	//误差计算
 	vec_err[0] =  (acc_norm[1] * z_vec[2] - z_vec[1] * acc_norm[2]);

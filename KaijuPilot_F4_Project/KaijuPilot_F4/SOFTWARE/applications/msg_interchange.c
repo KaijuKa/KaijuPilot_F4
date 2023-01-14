@@ -205,7 +205,7 @@ void DT_MSG_Frame_Send(u8 fun_id)
 			buf[cnt++] = BYTE2(s32_tmp);
 			buf[cnt++] = BYTE3(s32_tmp);
 			
-			s32_tmp = (s32)(pos_data.baro_height_err);
+			s32_tmp = (s32)(pos_data.baro_height);
 			buf[cnt++] = BYTE0(s32_tmp);
 			buf[cnt++] = BYTE1(s32_tmp);
 			buf[cnt++] = BYTE2(s32_tmp);

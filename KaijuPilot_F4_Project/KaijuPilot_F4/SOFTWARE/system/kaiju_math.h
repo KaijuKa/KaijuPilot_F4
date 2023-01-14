@@ -35,6 +35,36 @@ typedef struct{
 	float fb_d;
 } PID_VAL_structure;
 
+typedef struct
+{
+	float in_est;    //Estimator
+	float in_obs;    //Observation
+	
+	float fix_ki;
+	float ei_limit;     //
+
+
+/////	
+	float e;
+	float ei;
+
+	float out;
+}_INTE_FIX_Filter_structure;
+
+typedef struct
+{
+	float in_est_d;   //Estimator
+	float in_obs;    //Observation
+	
+	float fix_kp;
+	float e_limit;
+
+/////	
+	float e;
+
+	float out;
+}_FIX_INTE_Filter_structure;
+
 float my_sqrt_reciprocal(float number);
 float my_sqrt(float number);
 float my_abs(float f);
@@ -50,4 +80,6 @@ double mx_sin(double rad);
 double my_sin(double rad);
 float my_cos(double rad);
 float my_deadzone(float x,float medi,float zoom);
+void inte_fix_filter(float dT_s,_INTE_FIX_Filter_structure *data);
+void fix_inte_filter(float dT_s,_FIX_INTE_Filter_structure *data);
 #endif

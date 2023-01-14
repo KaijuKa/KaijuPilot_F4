@@ -343,3 +343,53 @@ float my_deadzone(float x,float medi,float zoom)
 	}
   return (t);
 }
+
+/*******************************************************************************
+* 函 数 名         : inte_fix_filter
+* 函数功能		     : 积分补偿滤波器
+* 输    入         : 周期s 滤波数据结构体
+* 输    出         : sin
+*******************************************************************************/
+void inte_fix_filter(float dT_s,_INTE_FIX_Filter_structure *data)
+{
+	float ei_lim_val;
+	
+	if(data->ei_limit>0)
+	{		
+		ei_lim_val = LIMIT(data->ei,-data->ei_limit,data->ei_limit);
+	}
+	else
+	{
+		ei_lim_val = data->ei;
+	}	
+	
+	data->out = (data->in_est + ei_lim_val);
+	
+	data->e = data->fix_ki *(data->in_obs - data->out);
+
+	data->ei += data->e *dT_s;
+
+
+}
+
+/*******************************************************************************
+* 函 数 名         : diff_fix_filter
+* 函数功能		     : 补偿积分滤波器
+* 输    入         : 周期s 滤波数据结构体
+* 输    出         : sin
+*******************************************************************************/
+void fix_inte_filter(float dT_s,_FIX_INTE_Filter_structure *data)
+{
+	
+	data->out += (data->in_est_d + data->e ) *dT_s;
+	
+	data->e = data->fix_kp *(data->in_obs - data->out);
+
+	if(data->e_limit>0)
+	{		
+		data->e = LIMIT(data->e,-data->e_limit,data->e_limit);
+	}
+	
+	
+}
+

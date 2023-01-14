@@ -22,15 +22,15 @@
 
 //mpu数据结构体
 typedef struct{
-	s16 gyro_x_raw;       //角速度 系数：0.061    即角速度 度/s = 0.061*gyro_X
+	s16 gyro_x_raw;       
 	s16 gyro_y_raw;
 	s16 gyro_z_raw;
 	
-	s16 acc_x_raw;        //加速度 系数：0.00061
+	s16 acc_x_raw;        
 	s16 acc_y_raw;
 	s16 acc_z_raw;
 	
-	s16 mag_x_raw;        //磁力计 系数：0.146
+	s16 mag_x_raw;        
 	s16 mag_y_raw;
 	s16 mag_z_raw;
 	
@@ -60,6 +60,9 @@ typedef struct{
 	float acc_x;        //加速度 系数：0.00061 m/s2
 	float acc_y;
 	float acc_z;
+	
+	float a_acc[3];     //机体坐标系下的运动加速度 m/s2
+	float w_acc[3];     //世界坐标系下的运动加速度 m/s2
 	
 	float mag_x;        //磁力计 系数：0.146
 	float mag_y;
