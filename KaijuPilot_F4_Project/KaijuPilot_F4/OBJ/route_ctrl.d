@@ -35,3 +35,5 @@
 ..\obj\route_ctrl.o: ..\FWLIB\inc\stm32f4xx_dac.h
 ..\obj\route_ctrl.o: ..\FWLIB\inc\stm32f4xx_dcmi.h
 ..\obj\route_ctrl.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
+..\obj\route_ctrl.o: ..\SOFTWARE\applications\pos_calcu.h
+..\obj\route_ctrl.o: ..\SOFTWARE\system\kaiju_math.h

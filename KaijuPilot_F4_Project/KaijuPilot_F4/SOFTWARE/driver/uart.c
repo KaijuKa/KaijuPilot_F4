@@ -1,6 +1,7 @@
 #include "uart.h"
 #include "remote_signal.h"
 #include "msg_interchange.h"
+#include "GPS.h"
 
 #if 1
 #pragma import(__use_no_semihosting)             
@@ -211,6 +212,7 @@ void USART3_IRQHandler(void)
 	{
 		USART_ClearITPendingBit(USART3, USART_IT_RXNE);
 		com_data =USART_ReceiveData(USART3);	//读取接收到的数据
+		DRV_GPS_ByteGet(com_data);
 	}
 	
 	if (USART_GetITStatus(USART3,USART_IT_TXE))

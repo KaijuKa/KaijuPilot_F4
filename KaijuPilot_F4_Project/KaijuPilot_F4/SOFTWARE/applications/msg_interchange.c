@@ -16,7 +16,7 @@ MSG_Ctrl_structure dt_msg_array[DT_MSG_NUM];
 MSG_Ctrl_structure tg_msg_array[TG_MSG_NUM];
 
 //枚举对应到真实的帧ID
-u8 DT_MSG_ID_ARRAY[DT_MSG_NUM] = {0x01, 0x03, 0x05, 0x07, 0x20, 0x30, 0x40};
+u8 DT_MSG_ID_ARRAY[DT_MSG_NUM] = {0x01, 0x03, 0x05, 0x0A, 0x20, 0x30, 0x40};
 
 u8 TG_MSG_ID_ARRAY[TG_MSG_NUM] = {0xE0, 0xE1, 0xE2, 0xE3, 0x00};
 
@@ -37,17 +37,17 @@ void DT_MSG_Init(void)
 	//高度
 	dt_msg_array[MSG_ID_HIGHT].dt_ms = 50;
 	
-	//飞行速度
-	dt_msg_array[MSG_ID_SPD].dt_ms = 200;
+	//期望姿态
+	dt_msg_array[MSG_ID_TARIMU].dt_ms = 50;
 	
 	//pwm输出
-	dt_msg_array[MSG_ID_PWM].dt_ms = 20;
+	dt_msg_array[MSG_ID_PWM].dt_ms = 50;
 	
 	//GPS位置
-	dt_msg_array[MSG_ID_GPS].dt_ms = 200;
+	dt_msg_array[MSG_ID_GPS].dt_ms = 100;
 	
 	//遥控器
-	dt_msg_array[MSG_ID_RC].dt_ms = 20;
+	dt_msg_array[MSG_ID_RC].dt_ms = 50;
 }
 
 /*******************************************************************************
@@ -128,6 +128,7 @@ void DT_MSG_Frame_Send(u8 fun_id)
 			buf[cnt++] = 13;
 			buf[cnt++] = 0;
 			
+			//上位机acc 单位cm/s2
 			s16_tmp = (s16)(imu_data.acc_x*100);
 			buf[cnt++] = BYTE0(s16_tmp);
 			buf[cnt++] = BYTE1(s16_tmp);
@@ -140,6 +141,7 @@ void DT_MSG_Frame_Send(u8 fun_id)
 			buf[cnt++] = BYTE0(s16_tmp);
 			buf[cnt++] = BYTE1(s16_tmp);
 			
+			//上位机gyro 单位rad*100/s
 			s16_tmp = (s16)(imu_data.gyro_x*100);
 			buf[cnt++] = BYTE0(s16_tmp);
 			buf[cnt++] = BYTE1(s16_tmp);
@@ -171,6 +173,7 @@ void DT_MSG_Frame_Send(u8 fun_id)
 			//欧拉角模式
 			buf[cnt++] = 1;
 			
+			//上位机 单位 角度*100
 			s16_tmp = (s16)(imu_data.rol*100);
 			buf[cnt++] = BYTE0(s16_tmp);
 			buf[cnt++] = BYTE1(s16_tmp);
@@ -199,6 +202,7 @@ void DT_MSG_Frame_Send(u8 fun_id)
 			buf[cnt++] = 9;
 			buf[cnt++] = 0;
 			
+			//上位机高度单位 cm
 			s32_tmp = (s32)(pos_data.fusion_height);
 			buf[cnt++] = BYTE0(s32_tmp);
 			buf[cnt++] = BYTE1(s32_tmp);
@@ -222,9 +226,32 @@ void DT_MSG_Frame_Send(u8 fun_id)
 		break;
 		
 		//包装速度信息成消息帧并发送
-		case MSG_ID_SPD:
+		case MSG_ID_TARIMU:
 		{
-
+			FLIGHT_Data_structure fl_data;
+			//从消息队列中取出imu数据
+			xQueuePeek(fl_data_queue, (void *)&fl_data, 0);	
+			
+			buf[cnt++] = 6;
+			buf[cnt++] = 0;
+			
+			s16_tmp = (s16)(fl_data.target_rol*100.0f);
+			buf[cnt++] = BYTE0(s16_tmp);
+			buf[cnt++] = BYTE1(s16_tmp);
+			
+			s16_tmp = (s16)(fl_data.target_pit*100.0f);
+			buf[cnt++] = BYTE0(s16_tmp);
+			buf[cnt++] = BYTE1(s16_tmp);
+			
+			s16_tmp = 0;
+			buf[cnt++] = BYTE0(s16_tmp);
+			buf[cnt++] = BYTE1(s16_tmp);
+			
+			//添加校验字段
+			MSG_Check_ADD(buf, cnt);
+			
+			//发送
+			DRV_USART1_Send(buf, cnt+2);
 		}
 		break;
 		
@@ -265,7 +292,61 @@ void DT_MSG_Frame_Send(u8 fun_id)
 		//包装gps信息成消息帧并发送
 		case MSG_ID_GPS:
 		{
-
+			buf[cnt++] = 23;
+			buf[cnt++] = 0;
+			
+			buf[cnt++] = pos_data.fix_sta;
+			buf[cnt++] = pos_data.star_num;
+			
+			//上位机经纬度 度*10000000
+			s32_tmp = (s32)(pos_data.log * 10000000.0f);
+			buf[cnt++] = BYTE0(s32_tmp);
+			buf[cnt++] = BYTE1(s32_tmp);
+			buf[cnt++] = BYTE2(s32_tmp);
+			buf[cnt++] = BYTE3(s32_tmp);
+			
+			s32_tmp = (s32)(pos_data.lat * 10000000.0f);
+			buf[cnt++] = BYTE0(s32_tmp);
+			buf[cnt++] = BYTE1(s32_tmp);
+			buf[cnt++] = BYTE2(s32_tmp);
+			buf[cnt++] = BYTE3(s32_tmp);
+			
+			//上位机 位置 单位 cm
+			s32_tmp = (s32)(pos_data.hMSL);
+			buf[cnt++] = BYTE0(s32_tmp);
+			buf[cnt++] = BYTE1(s32_tmp);
+			buf[cnt++] = BYTE2(s32_tmp);
+			buf[cnt++] = BYTE3(s32_tmp);
+			
+			//上位机 速度 单位 cm/s
+			s16_tmp = (s16)(pos_data.velN);
+			buf[cnt++] = BYTE0(s16_tmp);
+			buf[cnt++] = BYTE1(s16_tmp);
+			
+			s16_tmp = (s16)(pos_data.velE);
+			buf[cnt++] = BYTE0(s16_tmp);
+			buf[cnt++] = BYTE1(s16_tmp);
+			
+			s16_tmp = (s16)(pos_data.baro_velD);
+			buf[cnt++] = BYTE0(s16_tmp);
+			buf[cnt++] = BYTE1(s16_tmp);
+			
+			//位置精度因子 
+			//上位机 放大100倍 上位机上小于400表示良好
+			buf[cnt++] = (u8)(pos_data.pDop * 100.0f);
+			
+			//上位机 速度精度 单位 cm/s
+			buf[cnt++] = (u8)(pos_data.spdAcc);
+			
+			//水平精度
+			//上位机 水平精度 单位 cm
+			buf[cnt++] = (u8)(pos_data.hAcc);
+			
+			//添加校验字段
+			MSG_Check_ADD(buf, cnt);
+			
+			//发送
+			DRV_USART1_Send(buf, cnt+2);
 		}
 		break;
 		

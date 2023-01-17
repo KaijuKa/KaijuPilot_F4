@@ -4,6 +4,8 @@
 #include "par_manage.h"
 #include "imu.h"
 #include "att_ctrl.h"
+#include "pos_calcu.h"
+#include "route_ctrl.h"
 
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -57,7 +59,14 @@ void Flight_Ctrl_Task(u8 dT_ms)
 	}
 	else
 	{
-		fl_data.flight_mode = Sport;    //低位
+		if(rc_data.ch_processed[AUX2] > 300)
+		{
+			fl_data.flight_mode = Sport;    //高位
+		}
+		else if(rc_data.ch_processed[AUX2] > -200)
+		{
+			fl_data.flight_mode = RTL;    //中位
+		}
 	}
 	
 	//切换模式 复位pid val
@@ -91,6 +100,17 @@ void Flight_Ctrl_Task(u8 dT_ms)
 		fl_data.flight_stat = 0;
 	}
 	
+	//确定家的位置
+	if(fl_data.pos_stat == 0)
+	{
+		if(pos_data.fix_sta > 0 && pos_data.star_num > 6)
+		{
+			fl_data.pos_stat = 1;
+			fl_data.pos_log = pos_data.log;
+			fl_data.pos_lat = pos_data.lat;
+		}
+	}
+	
 	//根据飞行模式执行相应操作
 	switch(fl_data.flight_mode)
 	{
@@ -111,6 +131,7 @@ void Flight_Ctrl_Task(u8 dT_ms)
 		}
 		case RTL:
 		{
+			RTL_Task(dT_ms);
 			break;
 		}
 	}
@@ -144,7 +165,10 @@ void Stabilize_Task(u8 dT_ms)
 	float expect_rol = (rc_data.ch_processed[CH_ROL]/500.0f)*fl_par.par.rol_angle_max;
     float expect_pit = (rc_data.ch_processed[CH_PIT]/500.0f)*fl_par.par.pit_angle_max;
 	
-	ATT_Ctrl(0.02f, expect_rol, expect_pit, fl_data.flight_stat);
+	fl_data.target_rol = expect_rol;
+	fl_data.target_pit = expect_pit;
+	
+	ATT_Ctrl(dT_ms/1000.0f, expect_rol, expect_pit, fl_data.flight_stat);
 	
 	fl_data.pwm_out[CH_ROL] = (s16)(rol_val_L1.out);
 	fl_data.pwm_out[CH_PIT] = (s16)(pit_val_L1.out);
@@ -167,7 +191,40 @@ void Sport_Task(u8 dT_ms)
 	float expect_rol_spd = (my_deadzone(rc_data.ch_processed[CH_ROL], 0, 20)/500.0f)*fl_par.par.rol_angular_spd_max;
     float expect_pit_spd = (my_deadzone(rc_data.ch_processed[CH_PIT], 0, 20)/500.0f)*fl_par.par.pit_angular_spd_max;
 	
-	Rotation_Ctrl2(0.02f, expect_rol_spd, expect_pit_spd, fl_data.flight_stat);
+	fl_data.target_rol = expect_rol_spd;
+	fl_data.target_pit = expect_pit_spd;
+	
+	Rotation_Ctrl2(dT_ms/1000.0f, expect_rol_spd, expect_pit_spd, fl_data.flight_stat);
+	
+	fl_data.pwm_out[CH_ROL] = (s16)(rol_val_L1.out);
+	fl_data.pwm_out[CH_PIT] = (s16)(pit_val_L1.out);
+	fl_data.pwm_out[CH_THR] = rc_data.ch_processed[CH_THR];
+	fl_data.pwm_out[CH_YAW] = rc_data.ch_processed[CH_YAW];
+	
+	DRV_PWM_Output(fl_data.pwm_out[CH_ROL], fl_data.pwm_out[CH_PIT],\
+	fl_data.pwm_out[CH_THR], fl_data.pwm_out[CH_YAW]);
+}
+
+/*******************************************************************************
+* 函 数 名         : RTL_Task
+* 函数功能		     : 运动模式下的外设控制
+* 输    入         : 周期ms
+* 输    出         : 无
+*******************************************************************************/
+void RTL_Task(u8 dT_ms)
+{
+	float expect_pit = (rc_data.ch_processed[CH_PIT]/500.0f)*fl_par.par.pit_angle_max;
+	float expect_rol = 0;
+	
+	if(1 == fl_data.pos_stat)
+	{
+		expect_rol = Route_Ctrl(dT_ms, fl_data.pos_log, fl_data.pos_lat);
+	}
+	
+	fl_data.target_rol = expect_rol;
+	fl_data.target_pit = expect_pit;
+	
+	ATT_Ctrl(dT_ms/1000.0f, expect_rol, expect_pit, fl_data.flight_stat);
 	
 	fl_data.pwm_out[CH_ROL] = (s16)(rol_val_L1.out);
 	fl_data.pwm_out[CH_PIT] = (s16)(pit_val_L1.out);

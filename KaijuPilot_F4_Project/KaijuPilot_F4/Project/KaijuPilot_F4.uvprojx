@@ -586,6 +586,16 @@
               <FileType>5</FileType>
               <FilePath>..\SOFTWARE\driver\bmp280.h</FilePath>
             </File>
+            <File>
+              <FileName>GPS.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\SOFTWARE\driver\GPS.c</FilePath>
+            </File>
+            <File>
+              <FileName>GPS.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\SOFTWARE\driver\GPS.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

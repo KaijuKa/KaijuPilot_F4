@@ -53,18 +53,18 @@ typedef struct{
 	float y;
 	float z;
 	
-	float gyro_x;       //角速度 系数：0.061*3.14/180    即角速度 rad/s = gyro_X*0.061*3.14/180
+	float gyro_x;       //角速度 rad/s
 	float gyro_y;
 	float gyro_z;
 	
-	float acc_x;        //加速度 系数：0.00061 m/s2
+	float acc_x;        //加速度 m/s2
 	float acc_y;
 	float acc_z;
 	
-	float a_acc[3];     //机体坐标系下的运动加速度 m/s2
-	float w_acc[3];     //世界坐标系下的运动加速度 m/s2
+	float a_acc[3];     //机体坐标系下的运动加速度 cm/s2
+	float w_acc[3];     //世界坐标系下的运动加速度 cm/s2
 	
-	float mag_x;        //磁力计 系数：0.146
+	float mag_x;        //磁力计
 	float mag_y;
 	float mag_z;
 	                    //机体到世界的变换矩阵 a->w

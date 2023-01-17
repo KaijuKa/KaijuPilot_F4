@@ -49,3 +49,4 @@
 ..\obj\uart.o: ..\FreeRTOS\include\task.h
 ..\obj\uart.o: ..\FreeRTOS\include\list.h
 ..\obj\uart.o: ..\SOFTWARE\applications\msg_interchange.h
+..\obj\uart.o: ..\SOFTWARE\driver\GPS.h
