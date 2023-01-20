@@ -3,6 +3,8 @@
 #include "kaiju_math.h"
 
 
+ROUTE_Data_Structure route_data;
+
 /*
   | vel_vec
   |
@@ -33,8 +35,8 @@ float Route_Ctrl(u8 dT_ms, float target_log, float target_lat)
 	
 	
 	//当前位置到目标位置的向量
-	rtl_vec[0] = pos_data.log - target_log;
-	rtl_vec[1] = pos_data.lat - target_lat;
+	rtl_vec[0] = target_log - pos_data.log;
+	rtl_vec[1] = target_lat - pos_data.lat;
 	
 	//单位换算为m
 	rtl_vec[0] *= LOG_PARA;
@@ -54,6 +56,7 @@ float Route_Ctrl(u8 dT_ms, float target_log, float target_lat)
 	
 	//二维速度 地速
 	vel_abs = pos_data.gSpeed;
+	route_data.vel_abs = vel_abs;
 	
 	//单位换算为m/s
 	vel_abs *= 0.01f;
@@ -69,21 +72,28 @@ float Route_Ctrl(u8 dT_ms, float target_log, float target_lat)
 	{
 		rol_direct = -1;
 	}
+	route_data.direct = rol_direct;
 	
 	//到目标地点的距离计算
 	dist = my_sqrt(my_pow(rtl_vec[0]) + my_pow(rtl_vec[1]));
+	route_data.dist = dist;
 	
 	//速度与位置向量的夹角的cos值
 	cos_angle = (rtl_vec[0]*vel_vec[0] + rtl_vec[1]*vel_vec[1]) * safe_div(1, (vel_abs * dist), 0);
 		
 	//夹角的sin值
 	sin_angle = my_sqrt(1 - my_pow(cos_angle));
+	route_data.angle = fast_atan2(sin_angle, cos_angle)*57.30f;
 	
 	//滚转期望的向心加速度
 	centri_acc = 2 * vel_abs * vel_abs * sin_angle * safe_div(1, dist, 0);
 	
+	//限制向心加速度过大
+	centri_acc = LIMIT(centri_acc, 0, 9.81f);
+	route_data.centri_acc = centri_acc;
+	
 	//期望的rol角度 滤波
-	rol_target += 0.5f * (rol_target - rol_direct*fast_atan2(centri_acc, 9.81f)*57.30f);
+	rol_target += 0.5f * (rol_direct*fast_atan2(centri_acc, 9.81f)*57.30f - rol_target);
 	
 	//40度限制
 	rol_target = LIMIT(rol_target, -40, 40);

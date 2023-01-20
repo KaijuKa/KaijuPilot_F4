@@ -105,6 +105,9 @@ void Flight_Ctrl_Task(u8 dT_ms)
 	{
 		if(pos_data.fix_sta > 0 && pos_data.star_num > 6)
 		{
+			//高度初始化
+			RAW_Height_Calibration();
+			
 			fl_data.pos_stat = 1;
 			fl_data.pos_log = pos_data.log;
 			fl_data.pos_lat = pos_data.lat;

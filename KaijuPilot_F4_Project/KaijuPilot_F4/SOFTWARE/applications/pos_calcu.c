@@ -32,7 +32,7 @@ s32 wcz_acc;
 *******************************************************************************/
 void POS_Init(void)
 {
-	RAW_Height_Calibration();
+	;
 }
 
 /*******************************************************************************
@@ -43,24 +43,7 @@ void POS_Init(void)
 *******************************************************************************/
 void RAW_Height_Calibration(void)
 {
-	float bmp_press;
-	float tmp, raw_height;
-	u8 i;
-	
-	for(i = 0; i < 100; i++)
-	{
-		while(DRV_Bmp280_DataEnable() != 0);
-		
-		bmp_press = DRV_Bmp280_GetPressure();
-		
-		tmp = ( 101325 - bmp_press ) / 1000.0f;
-		raw_height = 0.82f * tmp * tmp * tmp + 9.0f * ( 101325 - bmp_press );
-		
-		pos_data.baro_height_offset += raw_height;
-		
-		delay_ms(1);
-	}
-	pos_data.baro_height_offset /= 100;
+	pos_data.baro_height_offset = pos_data.baro_height;
 }
 
 /*******************************************************************************

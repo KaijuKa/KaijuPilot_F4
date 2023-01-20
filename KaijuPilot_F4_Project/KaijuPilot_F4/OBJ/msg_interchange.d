@@ -55,3 +55,4 @@
 ..\obj\msg_interchange.o: ..\SOFTWARE\applications\flight_ctrl.h
 ..\obj\msg_interchange.o: ..\SOFTWARE\system\par_manage.h
 ..\obj\msg_interchange.o: ..\SOFTWARE\applications\pos_calcu.h
+..\obj\msg_interchange.o: ..\SOFTWARE\applications\route_ctrl.h

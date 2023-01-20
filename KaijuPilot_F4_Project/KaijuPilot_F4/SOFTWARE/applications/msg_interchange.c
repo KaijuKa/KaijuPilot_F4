@@ -6,6 +6,7 @@
 #include "flight_ctrl.h"
 #include "par_manage.h"
 #include "pos_calcu.h"
+#include "route_ctrl.h"
 
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -16,7 +17,7 @@ MSG_Ctrl_structure dt_msg_array[DT_MSG_NUM];
 MSG_Ctrl_structure tg_msg_array[TG_MSG_NUM];
 
 //枚举对应到真实的帧ID
-u8 DT_MSG_ID_ARRAY[DT_MSG_NUM] = {0x01, 0x03, 0x05, 0x0A, 0x20, 0x30, 0x40};
+u8 DT_MSG_ID_ARRAY[DT_MSG_NUM] = {0x01, 0x03, 0x05, 0x0A, 0x20, 0x30, 0x40, 0xF1};
 
 u8 TG_MSG_ID_ARRAY[TG_MSG_NUM] = {0xE0, 0xE1, 0xE2, 0xE3, 0x00};
 
@@ -48,6 +49,9 @@ void DT_MSG_Init(void)
 	
 	//遥控器
 	dt_msg_array[MSG_ID_RC].dt_ms = 50;
+	
+	//遥控器
+	dt_msg_array[MSG_ID_DEF].dt_ms = 50;
 }
 
 /*******************************************************************************
@@ -113,6 +117,7 @@ void DT_MSG_Frame_Send(u8 fun_id)
 	s16 s16_tmp;
 	u16 u16_tmp;
 	s32 s32_tmp;
+	float f_tmp;
 	
 	//构造帧头
 	buf[cnt++] = FRAME_HEAD;
@@ -383,6 +388,46 @@ void DT_MSG_Frame_Send(u8 fun_id)
 			s16_tmp = ch_processed[AUX2] + 1500;
 			buf[cnt++] = BYTE0(s16_tmp);
 			buf[cnt++] = BYTE1(s16_tmp);
+			
+			//添加校验字段
+			MSG_Check_ADD(buf, cnt);
+			
+			//发送
+			DRV_USART1_Send(buf, cnt+2);
+		}
+		break;
+		
+		//灵活数据帧
+		case MSG_ID_DEF:
+		{
+			buf[cnt++] = 17;
+			buf[cnt++] = 0;
+			
+			f_tmp = route_data.dist;
+			buf[cnt++] = BYTE0(f_tmp);
+			buf[cnt++] = BYTE1(f_tmp);
+			buf[cnt++] = BYTE2(f_tmp);
+			buf[cnt++] = BYTE3(f_tmp);
+			
+			f_tmp = route_data.vel_abs;
+			buf[cnt++] = BYTE0(f_tmp);
+			buf[cnt++] = BYTE1(f_tmp);
+			buf[cnt++] = BYTE2(f_tmp);
+			buf[cnt++] = BYTE3(f_tmp);
+			
+			f_tmp = route_data.angle;
+			buf[cnt++] = BYTE0(f_tmp);
+			buf[cnt++] = BYTE1(f_tmp);
+			buf[cnt++] = BYTE2(f_tmp);
+			buf[cnt++] = BYTE3(f_tmp);
+			
+			f_tmp = route_data.centri_acc;
+			buf[cnt++] = BYTE0(f_tmp);
+			buf[cnt++] = BYTE1(f_tmp);
+			buf[cnt++] = BYTE2(f_tmp);
+			buf[cnt++] = BYTE3(f_tmp);
+			
+			buf[cnt++] = route_data.direct;
 			
 			//添加校验字段
 			MSG_Check_ADD(buf, cnt);

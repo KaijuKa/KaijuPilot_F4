@@ -30,6 +30,7 @@ enum
 	MSG_ID_PWM ,   //pwm输出值信息
 	MSG_ID_GPS ,   //gps位置信息
 	MSG_ID_RC ,    //遥控信息
+	MSG_ID_DEF,    //自定义数据帧
 	DT_MSG_NUM,//7
 };
 
