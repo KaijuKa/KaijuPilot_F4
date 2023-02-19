@@ -54,3 +54,4 @@
 ..\obj\flight_ctrl.o: ..\SOFTWARE\system\kaiju_math.h
 ..\obj\flight_ctrl.o: ..\SOFTWARE\applications\pos_calcu.h
 ..\obj\flight_ctrl.o: ..\SOFTWARE\applications\route_ctrl.h
+..\obj\flight_ctrl.o: ..\SOFTWARE\applications\tecs.h

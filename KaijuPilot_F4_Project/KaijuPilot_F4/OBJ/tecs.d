@@ -37,3 +37,16 @@
 ..\obj\tecs.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
 ..\obj\tecs.o: ..\SOFTWARE\system\kaiju_math.h
 ..\obj\tecs.o: ..\SOFTWARE\system\par_manage.h
+..\obj\tecs.o: ..\SOFTWARE\applications\pos_calcu.h
+..\obj\tecs.o: ..\SOFTWARE\applications\imu.h
+..\obj\tecs.o: ..\FreeRTOS\include\FreeRTOS.h
+..\obj\tecs.o: D:\keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+..\obj\tecs.o: ..\FreeRTOS\include\FreeRTOSConfig.h
+..\obj\tecs.o: ..\FreeRTOS\include\projdefs.h
+..\obj\tecs.o: ..\FreeRTOS\include\portable.h
+..\obj\tecs.o: ..\FreeRTOS\include\deprecated_definitions.h
+..\obj\tecs.o: ..\FreeRTOS\portable\RVDS\ARM_CM4F\portmacro.h
+..\obj\tecs.o: ..\FreeRTOS\include\mpu_wrappers.h
+..\obj\tecs.o: ..\FreeRTOS\include\queue.h
+..\obj\tecs.o: ..\FreeRTOS\include\task.h
+..\obj\tecs.o: ..\FreeRTOS\include\list.h

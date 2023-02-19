@@ -1,0 +1,6 @@
+此文件夹下的两个文件夹都复制放到Arduino安装文件夹里的libraries文件夹里
+因为程序里用到了
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BMP280.h>
+这两个
+例程看BMP280_IIC_SPI文件夹里的

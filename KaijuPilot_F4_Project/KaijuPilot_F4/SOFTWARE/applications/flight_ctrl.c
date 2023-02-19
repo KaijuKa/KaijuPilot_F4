@@ -6,6 +6,7 @@
 #include "att_ctrl.h"
 #include "pos_calcu.h"
 #include "route_ctrl.h"
+#include "tecs.h"
 
 #include "FreeRTOS.h"
 #include "queue.h"
@@ -216,11 +217,16 @@ void Sport_Task(u8 dT_ms)
 *******************************************************************************/
 void RTL_Task(u8 dT_ms)
 {
-	float expect_pit = (rc_data.ch_processed[CH_PIT]/500.0f)*fl_par.par.pit_angle_max;
+	float expect_pit = 0;
 	float expect_rol = 0;
+	float expect_thr = 0;
 	
 	if(1 == fl_data.pos_stat)
 	{
+		TECS_Ctrl(dT_ms/1000.0f);
+		expect_pit = tecs_data.pit_out;
+		//”Õ√≈pwm÷µŒ™1000-2000
+		expect_thr = tecs_data.thr_out + 1000;
 		expect_rol = Route_Ctrl(dT_ms, fl_data.pos_log, fl_data.pos_lat);
 	}
 	
@@ -231,10 +237,31 @@ void RTL_Task(u8 dT_ms)
 	
 	fl_data.pwm_out[CH_ROL] = (s16)(rol_val_L1.out);
 	fl_data.pwm_out[CH_PIT] = (s16)(pit_val_L1.out);
-	fl_data.pwm_out[CH_THR] = rc_data.ch_processed[CH_THR];
+	fl_data.pwm_out[CH_THR] = expect_thr;
 	fl_data.pwm_out[CH_YAW] = rc_data.ch_processed[CH_YAW];
 	
 	DRV_PWM_Output(fl_data.pwm_out[CH_ROL], fl_data.pwm_out[CH_PIT],\
 	fl_data.pwm_out[CH_THR], fl_data.pwm_out[CH_YAW]);
+	
+//	float expect_pit = (rc_data.ch_processed[CH_PIT]/500.0f)*fl_par.par.pit_angle_max;
+//	float expect_rol = 0;
+//	
+//	if(1 == fl_data.pos_stat)
+//	{
+//		expect_rol = Route_Ctrl(dT_ms, fl_data.pos_log, fl_data.pos_lat);
+//	}
+//	
+//	fl_data.target_rol = expect_rol;
+//	fl_data.target_pit = expect_pit;
+//	
+//	ATT_Ctrl(dT_ms/1000.0f, expect_rol, expect_pit, fl_data.flight_stat);
+//	
+//	fl_data.pwm_out[CH_ROL] = (s16)(rol_val_L1.out);
+//	fl_data.pwm_out[CH_PIT] = (s16)(pit_val_L1.out);
+//	fl_data.pwm_out[CH_THR] = rc_data.ch_processed[CH_THR];
+//	fl_data.pwm_out[CH_YAW] = rc_data.ch_processed[CH_YAW];
+//	
+//	DRV_PWM_Output(fl_data.pwm_out[CH_ROL], fl_data.pwm_out[CH_PIT],\
+//	fl_data.pwm_out[CH_THR], fl_data.pwm_out[CH_YAW]);
 }
 

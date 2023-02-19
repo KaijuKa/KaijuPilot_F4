@@ -5,9 +5,9 @@
 
 //tecs控制结构体
 typedef struct{
-	float air_speed;          //当前空速 V
-	float altitude;           //当前海拔高度 H
-	float track_angle;        //当前航迹角 θ
+	float air_speed;          //当前空速 V  m/s
+	float altitude;           //当前海拔高度 H m
+	float track_angle;        //当前航迹角 θ 度
 	float air_spd_diff;       //当前空速微分 dV/dt
 	
 	float target_track_angle; //目标航迹角
@@ -27,6 +27,8 @@ typedef struct{
 	
 } TECS_Data_structure;
 
-void TECS_Ctrl(u8 dT_s);
+extern TECS_Data_structure tecs_data;
+
+void TECS_Ctrl(float dT_s);
 
 #endif

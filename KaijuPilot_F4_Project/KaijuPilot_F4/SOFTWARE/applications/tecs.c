@@ -1,33 +1,71 @@
 #include "tecs.h"
 #include "kaiju_math.h"
 #include "par_manage.h"
+#include "pos_calcu.h"
+#include "imu.h"
 
 #define GRAV_GCC 9.8f //重力加速度
 
 TECS_Data_structure tecs_data;
 
 // 目标巡航高度 转换为 目标航迹角
-PID_ARG_structure alt_2_tt_angle_arg;
+PID_ARG_structure alt_2_tt_angle_arg = {
+	.kp = 1.5f,
+	.kd = 0,
+	.ki = 0,
+	.expect_kd = 0,
+	.fb_kd = 0
+};
 PID_VAL_structure alt_2_tt_angle_val;
 
 // 目标巡航速度 转换为 目标巡航速度微分
-PID_ARG_structure spd_2_t_spd_diff_arg;
+PID_ARG_structure spd_2_t_spd_diff_arg = {
+	.kp = 50.0f,
+	.kd = 0,
+	.ki = 0,
+	.expect_kd = 0,
+	.fb_kd = 0
+};
 PID_VAL_structure spd_2_t_spd_diff_val;
 
 //油门比例控制相关
-PID_ARG_structure thr_p_arg;
+PID_ARG_structure thr_p_arg = {
+	.kp = 1.2f,
+	.kd = 0,
+	.ki = 0,
+	.expect_kd = 0,
+	.fb_kd = 0
+};
 PID_VAL_structure thr_p_val;
 
 //油门积分微分控制相关
-PID_ARG_structure thr_id_arg;
+PID_ARG_structure thr_id_arg = {
+	.kp = 0,
+	.kd = 0,
+	.ki = 0.06f,
+	.expect_kd = 0,
+	.fb_kd = 0
+};
 PID_VAL_structure thr_id_val;
 
 //升降舵比例控制相关
-PID_ARG_structure pit_p_arg;
+PID_ARG_structure pit_p_arg = {
+	.kp = 1.2f,
+	.kd = 0,
+	.ki = 0,
+	.expect_kd = 0,
+	.fb_kd = 0
+};
 PID_VAL_structure pit_p_val;
 
 //升降舵积分微分控制相关
-PID_ARG_structure pit_id_arg;
+PID_ARG_structure pit_id_arg = {
+	.kp = 0,
+	.kd = 0,
+	.ki = 0.06f,
+	.expect_kd = 0,
+	.fb_kd = 0
+};
 PID_VAL_structure pit_id_val;
 
 /*******************************************************************************
@@ -36,8 +74,21 @@ PID_VAL_structure pit_id_val;
 * 输    入         : 周期dT_s
 * 输    出         : 无
 *******************************************************************************/
-void TECS_Ctrl(u8 dT_s)
+void TECS_Ctrl(float dT_s)
 {
+	static float last_air_speed;
+	
+	IMU_Data_structure imu_data;
+	//从消息队列中取出imu数据
+	xQueuePeek(imu_data_queue, (void *)&imu_data, 0);
+	
+	tecs_data.air_speed = pos_data.gSpeed;
+	tecs_data.altitude = pos_data.fusion_height;
+	tecs_data.track_angle = imu_data.pit;
+	tecs_data.air_spd_diff = (tecs_data.air_speed - last_air_speed)/dT_s;
+	last_air_speed = tecs_data.air_speed;
+	
+	
 	//计算目标航迹角
 	pid_calcu(dT_s, fl_par.par.target_autoft_altitude, tecs_data.altitude, 
 	&alt_2_tt_angle_arg, &alt_2_tt_angle_val, 0, 0);
@@ -75,4 +126,11 @@ void TECS_Ctrl(u8 dT_s)
 	//计算最终输出
 	tecs_data.thr_out = thr_p_val.out + thr_id_val.out;
 	tecs_data.pit_out = pit_p_val.out + pit_id_val.out;
+	
+	//限制幅度
+	//thr 放大到pwm值
+	tecs_data.thr_out = LIMIT(tecs_data.thr_out, fl_par.par.auto_thr_min, fl_par.par.auto_thr_max);
+	tecs_data.thr_out *= 4.0f;
+	tecs_data.pit_out = LIMIT(tecs_data.pit_out, -fl_par.par.auto_pit_max, fl_par.par.auto_pit_max);
+	
 }

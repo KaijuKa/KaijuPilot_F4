@@ -1,4 +1,0 @@
-"main.obj",
-"i2c.obj" 
-TO "i2c" 
-RAMSIZE(256) 
